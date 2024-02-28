@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('boxsleeves', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('type',['img', 'leather', 'canvas', 'acrylic']);
             $table->text('img')->nullable();
             $table->timestamps();
         });

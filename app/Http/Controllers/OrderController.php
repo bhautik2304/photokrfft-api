@@ -69,7 +69,7 @@ class OrderController extends Controller
         $order->coverupgradecolors_id = $orderData->productcovercolor;
         
         $order->boxsleeve_id = $orderData->productboxSleev;
-        $order->boxsleeve_type = $orderData->productboxandsleeveType;
+        $order->boxsleeve_type = "leather"; //$orderData->productboxandsleeveType;
         $order->boxsleeveupgrades_id = $orderData->productboxandsleeveoption;
         $order->boxsleevecolors_id = $orderData->productboxandsleevecolor;
         
