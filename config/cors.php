@@ -16,9 +16,17 @@ return [
     */
     'paths' => ['api/*', 'sanctum/csrf-cookie'],
     'allowed_methods' => ['*'],
-    'allowed_origins' => ['https://admin.sascube.ltd', 'https://sascube.ltd', "http://localhost:3000", "http://localhost:3030/", "http://127.0.0.1:3030", "http://127.0.0.1:3000", "http://127.0.0.1:5000" ,"*"],
+    'allowed_origins' => ['https://admin.sascube.ltd', 'https://sascube.ltd', "http://localhost:3000", "http://localhost:3030/", "http://127.0.0.1:3030", "http://127.0.0.1:3000", "http://127.0.0.1:5000", "*"],
     'allowed_origins_patterns' => [],
-    'allowed_headers' => ['*'],
+    'allowed_headers' => [
+        '*',
+        'Accept',
+        'Accept-Language',
+        'Content-Type',
+        'X-Requested-With',
+        'X-CSRF-Token',
+        'application/json'
+    ],
     'exposed_headers' => [],
     'max_age' => 0,
     'supports_credentials' => false,
