@@ -40,9 +40,10 @@ class OrientationController extends Controller
 
         // create file store in public folder
 
+        // dd($req->toArray());
 
         $orientation = new orientation;
-        $orientation->name = $req->name;
+        $orientation->name = $req->input('name');
         $orientation->img = storeFile($req, 'img', '/img/orientation/');
         $orientation->save();
 

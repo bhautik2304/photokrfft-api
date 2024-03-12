@@ -20,6 +20,7 @@ return new class extends Migration
             $table->enum('currency_sign', ['$', '€', '£', '¥', '₹'])->default('$');
             $table->text('img')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

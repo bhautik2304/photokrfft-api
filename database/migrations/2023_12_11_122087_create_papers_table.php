@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('img')->nullable();
             $table->unsignedBigInteger('value');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

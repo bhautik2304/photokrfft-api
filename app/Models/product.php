@@ -12,7 +12,7 @@ class product extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('orientationScope', function (Builder $builder) {
-            $builder->with(['albumCopyPrice','orientation']);
+            $builder->with(['albumCopyPrice','orientation','pritnigPrice']);
         });
     }
 
@@ -29,5 +29,9 @@ class product extends Model
     public function albumCopyPrice()
     {
         return $this->hasMany(productalbumcopyprice::class, 'product_id');
+    }
+    public function pritnigPrice()
+    {
+        return $this->hasMany(printingprice::class, 'product_id');
     }
 }

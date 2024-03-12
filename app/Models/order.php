@@ -37,12 +37,14 @@ class order extends Model
         'order_total',
         'discount',
         'delivery_address',
+        'printing_type',
+        'printing_price',
     ];
 
     protected static function booted(): void
     {
         static::addGlobalScope('orderScope', function (Builder $builder) {
-            $builder->with(["orderDetaild","orderPhotosLink",'costomer', 'product', 'productorientation', 'productsize', 'productsheet', 'productpaper', 'productcover', 'coversupgrade', 'coversupgradecolor', 'productboxsleeve', 'countryzone']);
+            $builder->with(["productboxsleeveUpgradeColor", "productboxsleeveUpgrade", "orderDetaild", "orderPhotosLink", 'costomer', 'product', 'productorientation', 'productsize', 'productsheet', 'productpaper', 'productcover', 'coversupgrade', 'coversupgradecolor', 'productboxsleeve', 'countryzone']);
         });
     }
 
@@ -94,6 +96,14 @@ class order extends Model
     public function productboxsleeve()
     {
         return $this->hasOne(productboxsleeve::class, 'id', 'boxsleeve_id');
+    }
+    public function productboxsleeveUpgrade()
+    {
+        return $this->hasOne(boxsleeveupgrade::class, 'id', 'boxsleeveupgrades_id')->withoutGlobalScope('boxandsleeveUpgradeScop');
+    }
+    public function productboxsleeveUpgradeColor()
+    {
+        return $this->hasOne(boxsleevecolor::class, 'id', 'boxsleevecolors_id');
     }
 
     public function countryzone()

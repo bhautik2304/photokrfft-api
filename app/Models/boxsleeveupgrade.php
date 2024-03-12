@@ -10,7 +10,7 @@ class boxsleeveupgrade extends Model
     use HasFactory;
     protected static function booted(): void
     {
-        static::addGlobalScope('ancient', function (Builder $builder) {
+        static::addGlobalScope('boxandsleeveUpgradeScop', function (Builder $builder) {
             $builder->with('boxsleeveupgradecolor');
         });
     }

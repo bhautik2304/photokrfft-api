@@ -5,7 +5,7 @@ use App\Models\productSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authModule\authtication;
-use App\Http\Controllers\{AdminuserController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, OrientationController, PaperController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SheetController, SizeController, StudioController};
+use App\Http\Controllers\{AdminuserController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, OrientationController, PaperController, PrintingpriceController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SheetController, SizeController, StudioController};
 use App\Models\costomer;
 use App\Models\order;
 
@@ -53,6 +53,7 @@ Route::post('costomer/discount-update/{id}', [CostomerController::class, 'change
 
 Route::apiResource('product', ProductController::class);
 Route::apiResource('product/productalbumcopyprice', ProductAlbumCopyPriceController::class);
+Route::apiResource('product/printigprice', PrintingpriceController::class);
 Route::apiResource('countryzone', CountryzoneController::class);
 Route::apiResource('orientation', OrientationController::class);
 Route::apiResource('Size', SizeController::class);

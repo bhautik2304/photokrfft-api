@@ -37,7 +37,7 @@ class PrintingpriceController extends Controller
     {
         //
         $printingprice=new printingprice();
-        $printingprice->product_id=$request->product_id;
+        $printingprice->product_id=$request->productid;
         $printingprice->countryzone_id=$request->countryzone_id;
         $printingprice->price=$request->price;
         $printingprice->save();
@@ -76,9 +76,11 @@ class PrintingpriceController extends Controller
      * @param  \App\Models\printingprice  $printingprice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, printingprice $printingprice)
+    public function update(Request $request, printingprice $printingprice,$id)
     {
         //
+        $printingprice->find($id)->update(["price" => $request->price]);
+        return response(["msg" => "Printing Price Save successfully"], 200);
     }
 
     /**

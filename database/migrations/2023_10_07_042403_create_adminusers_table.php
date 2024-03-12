@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('adminusers', function (Blueprint $table) {
             $table->id();
             // $table->unsignedBigInteger("studio_id")->nullable();
-            // $table->enum("role", ["masteradmin", "user"])->default("user");
+            $table->enum("role", ["masteradmin", "user"])->default("user");
             $table->string("name");
             $table->unsignedBigInteger("phone_no");
             $table->unsignedBigInteger("otp")->nullable();
