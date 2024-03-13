@@ -186,6 +186,22 @@ class OrderController extends Controller
             'message' => 'Order status updated successfully',
         ]);
     }
+    public function deliveryPartnerUpdate(Request $request, $id)
+    {
+        $order = order::find($id);
+        $order->update([
+            "delivery_partner_link" => $request->delivery_partner_link,
+            "delivery_tracking_no" => $request->delivery_tracking_no
+        ]);
+        // dd($order->costomer->email);
+
+        // Mail::to($order->costomer->email)->send(new newOrderUpdate());
+
+        return response([
+            'order' => $order,
+            'message' => 'Delivery Partner Detaild Store successfully',
+        ]);
+    }
 
     public function PaymentstatusUpdate(Request $request, $id)
     {

@@ -39,6 +39,8 @@ class order extends Model
         'delivery_address',
         'printing_type',
         'printing_price',
+        'delivery_partner_link',
+        'delivery_tracking_no',
     ];
 
     protected static function booted(): void
