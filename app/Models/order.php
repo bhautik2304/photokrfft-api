@@ -67,7 +67,7 @@ class order extends Model
 
     public function productsize()
     {
-        return $this->hasOne(productsize::class, 'id', 'product_size_id')->withoutGlobalScope('sizeScope');
+        return $this->hasOne(productSize::class, 'id', 'product_size_id')->withoutGlobalScope('sizeScope');
     }
 
     public function productsheet()
