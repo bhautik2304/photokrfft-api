@@ -15,5 +15,6 @@ class adminuser extends Model
         "profile_photo",
         "email",
         "password",
+        "token"
     ];
 }

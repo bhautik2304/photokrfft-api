@@ -75,7 +75,10 @@ class CostomerController extends Controller
 
         // Mail::to()->send(new newCustomerRequiest());
 
-        event(new newcostomerrequist("$costomer->name Send To Register Request"));
+        event(new newcostomerrequist([
+            "msg" => "$costomer->name Send To Register Request",
+            "type"=> "customer"
+        ]));
 
         return response(["msg" => "$costomer->name You are Register Successfully"], 200);
     }
@@ -161,7 +164,7 @@ class CostomerController extends Controller
         $costomer->find($id)->update([
             "status" => $req->status
         ]);
-          
+
         $status = $req->status ? "Activated" : "Deactivate";
 
         return response(["msg" => "$costomers->name $status Successfully", "code" => 200], 200);

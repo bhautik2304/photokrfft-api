@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('img')->nullable();
             $table->unsignedBigInteger('min_page')->default(15);
-            $table->boolean('with_boxandsleeve')->default(true);
+            $table->boolean('boxandsleeve')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

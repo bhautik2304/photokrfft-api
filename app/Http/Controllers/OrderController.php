@@ -54,6 +54,8 @@ class OrderController extends Controller
         $order->order_date = date('Y-m-d');
         $order->user_id = $orderData->user->id;
         $order->product_id = $orderData->product_id;
+        $order->pritnig_price_type = $orderData->pritnig_price_type;
+        $order->pritnig_price = $orderData->pritnig_price_value;
         $order->product_orientation_id = $orderData->productOrientation;
         $order->product_size_id = $orderData->productSize;
         $order->product_sheet_id = $orderData->productSheet;
@@ -69,12 +71,14 @@ class OrderController extends Controller
         $order->coverupgradecolors_id = $orderData->productcovercolor;
         
         $order->boxsleeve_id = $orderData->productboxSleev;
-        $order->boxsleeve_type = "leather"; //$orderData->productboxandsleeveType;
+        $order->boxsleeve_type = $orderData->productboxandsleeveType; //$orderData->productboxandsleeveType;
         $order->boxsleeveupgrades_id = $orderData->productboxandsleeveoption;
         $order->boxsleevecolors_id = $orderData->productboxandsleevecolor;
         
         $order->boxsleevefrontimg = storeFile($request, 'boxsleevefrontimg', '/order/boxsleevefront/');
+        $order->boxsleevebacksideimg = storeFile($request, 'boxsleevebackimg', '/order/boxsleevefront/');
         $order->coverfrontimg = storeFile($request, 'coverfrontphoto', '/order/coverfront/');
+        $order->coverbacksideimg = storeFile($request, 'coverbackphoto', '/order/coverfront/');
         
         $order->is_sample = $orderData->isSample;
         

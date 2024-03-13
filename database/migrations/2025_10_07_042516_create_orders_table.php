@@ -20,7 +20,7 @@ return new class extends Migration
             $table->enum('pritnig_price_type',['print_bind','design_print_bind']);
             $table->unsignedBigInteger('pritnig_price')->default(0);
             $table->enum('payment_status', ['pending', 'paid', 'credit'])->default('pending');
-            $table->enum('order_status', ['pending', 'processing', 'completed', 'cancel'])->default('pending');
+            $table->enum('order_status', ['pending', 'processing', 'completed', 'cancel','dispatch'])->default('pending');
             $table->unsignedBigInteger('user_id');
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreignId('product_orientation_id')->references('id')->on('productorientations')->onDelete('cascade');
@@ -28,13 +28,13 @@ return new class extends Migration
             $table->foreignId('product_sheet_id')->references('id')->on('productsheets')->onDelete('cascade');
             $table->foreignId('productpapers_id')->references('id')->on('productpapers')->onDelete('cascade');
             $table->foreignId('productcovers_id')->references('id')->on('productcovers')->onDelete('cascade');
-            $table->enum('cover_type', ['img_option_colors', 'option_colors', 'both_img']);
-            $table->unsignedBigInteger('coversupgrades_id')->nullable(null);
+            $table->enum('cover_type', ['img_option_colors', 'option_colors', 'both_img'])->nullable();
+            $table->unsignedBigInteger('coversupgrades_id')->nullable();
             $table->unsignedBigInteger('coverupgradecolors_id')->nullable();
             $table->text('coverfrontimg')->nullable();
             $table->text('coverbacksideimg')->nullable();
             $table->unsignedBigInteger('boxsleeve_id')->nullable();
-            $table->enum('boxsleeve_type', ['img_option_colors', 'option_colors', 'both_img']);
+            $table->enum('boxsleeve_type', ['img_option_colors', 'option_colors', 'both_img'])->nullable();
             $table->unsignedBigInteger('boxsleeveupgrades_id')->nullable();
             $table->unsignedBigInteger('boxsleevecolors_id')->nullable();
             $table->text('boxsleevefrontimg')->nullable();
@@ -54,6 +54,8 @@ return new class extends Migration
             $table->unsignedBigInteger('order_total');
             $table->unsignedBigInteger('discount')->nullable();
             $table->text('delivery_address')->nullable();
+            $table->text('delivery_partner_link')->nullable();
+            $table->text('delivery_tracking_no')->nullable();
             $table->timestamps();
         });
     }
