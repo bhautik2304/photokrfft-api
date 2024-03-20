@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\costomer;
+use App\Models\customer;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\costomerrequist;
-use App\Models\otpveryfication;
-use App\Events\newcostomerrequist;
-use App\Mail\customer\customerUpdate;
+use App\Mail\auth\emailverify;
+use App\Service\NotificationService;
 use App\Mail\customer\newCustomerRequiest;
 use Illuminate\Support\Facades\{Hash, Mail};
 
-class CostomerController extends Controller
+class costomerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,7 +20,7 @@ class CostomerController extends Controller
     public function index()
     {
         //
-        return response(["costomer" => costomer::all()]);
+        return success("Retrived All Customer", customer::all());
     }
 
     /**
@@ -44,79 +43,83 @@ class CostomerController extends Controller
     {
         //
 
-        $users_email = costomer::where('email', $req->email)->first();
+        $users_email = customer::where('email', $req->email)->first();
 
         if ($users_email) {
             # code...
             return response(["msg" => "This email Id is already registered", "code" => 444], 202);
         }
-        $users_mobile = costomer::where('phone_no', $req->phone_no)->first();
+        $users_mobile = customer::where('phone_no', $req->phone_no)->first();
 
         if ($users_mobile) {
             # code...
             return response(["msg" => "This mobile is already registered", "code" => 444], 202);
         }
 
-        $costomer = new costomer;
-        $costomer->name = $req->name;
-        $costomer->phone_no = $req->phone_no;
-        $costomer->email = $req->email;
-        $costomer->password = Hash::make($req->password);
+        $token=Str::random(32);
 
-        $costomer->address = $req->address;
-        $costomer->state = $req->state;
-        $costomer->country = $req->country;
+        $customer = new customer;
+        $customer->name = $req->name;
+        $customer->country_code = $req->country_code;
+        $customer->phone_no = $req->phone_no;
+        $customer->email = $req->email;
+        $customer->password = Hash::make($req->password);
 
-        $costomer->compunys_name = $req->compunys_name;
-        $costomer->compunys_logo = storeFile($req, 'compunys_logo', '/brand/logo/');
-        $costomer->social_link_1 = $req->social_link_1;
-        $costomer->social_link_2 = $req->social_link_2;
-        $costomer->save();
+        $customer->address = $req->address;
+        $customer->state = $req->state;
+        $customer->country = $req->country;
 
+        $customer->compunys_name = $req->compunys_name;
+        $customer->compunys_logo = storeFile($req, 'compunys_logo', '/brand/logo/');
+        $customer->social_link_1 = $req->social_link_1;
+        $customer->social_link_2 = $req->social_link_2;
+        
+        $customer->access_token=$token;
+        $customer->save();
+
+        Mail::to($customer->email)->send(new emailverify(route('customeremailveryfy',$token)));
         // Mail::to()->send(new newCustomerRequiest());
 
-        event(new newcostomerrequist([
-            "msg" => "$costomer->name Send To Register Request",
-            "type"=> "customer"
-        ]));
+        $Notification =new NotificationService;
+        $Notification->createNotification("$customer->name has sent a new customer request",config('notificationstatus.customer'));
 
-        return response(["msg" => "$costomer->name You are Register Successfully"], 200);
+        return created("$customer->name You are Register Successfully");
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\costomer  $costomer
+     * @param  \App\Models\customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function aprovedReq(costomer $costomerreq, $id)
+    public function aprovedReq(customer $customerreq, $id)
     {
         //
-        $costomerreq->find($id)->update([
+        $customerreq->find($id)->update([
             "approved" => 1,
             "status" => true
         ]);
 
-        $costomerreq->find($id)->first();
-        // Mail::to($costomerreq->email)->send(new customerUpdate($costomerreq->name));
+        $customerreq->find($id)->first();
+        // Mail::to($customerreq->email)->send(new customerUpdate($customerreq->name));
 
-        return response(["msg" => "Approved", "code" => 200], 200);
+        return success("Approved");
     }
 
-    public function show(Request $request, costomer $costomers)
+    public function show(Request $request, customer $customers)
     {
         //
         // return
-        return response(["costomer" => $costomers->where('token', $request->header('Authorization'))->first()]);
+        return success("Customer Is Authorised", $customers->where('token', $request->header('Authorization'))->first());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\costomer  $costomer
+     * @param  \App\Models\customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function edit(costomer $costomer)
+    public function edit(customer $customer)
     {
         //
     }
@@ -125,13 +128,13 @@ class CostomerController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\costomer  $costomer
+     * @param  \App\Models\customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $req, costomer $costomerd, $id)
+    public function update(Request $req, customer $customerd, $id)
     {
         //
-        $costomerd->find($id)->update([
+        $customerd->find($id)->update([
             "name" => $req->name,
             "phone_no" => $req->phone_no,
             "email" => $req->email,
@@ -140,80 +143,80 @@ class CostomerController extends Controller
             "address" => $req->address,
         ]);
 
-        return response(["msg" => "Costomer Updated Successfully"]);
+        return success("customer Updated Successfully");
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\costomer  $costomer
+     * @param  \App\Models\customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy(costomer $costomer, $id)
+    public function destroy(customer $customer, $id)
     {
         //
-        $costomers = $costomer->find($id)->first();
-        // $costomer->destroy($id);
+        $customers = $customer->find($id)->first();
+        $customer->destroy($id);
 
-        return response(["$costomers Deleted Successfully"]);
+        return success("$customers->name Deleted Successfully");
     }
-    public function statusUpdate(Request $req, costomer $costomer, $id)
+    public function statusUpdate(Request $req, customer $customer, $id)
     {
         //
-        $costomers = $costomer->find($id)->first();
-        $costomer->find($id)->update([
+        $customers = $customer->find($id)->first();
+        $customer->find($id)->update([
             "status" => $req->status
         ]);
 
         $status = $req->status ? "Activated" : "Deactivate";
 
-        return response(["msg" => "$costomers->name $status Successfully", "code" => 200], 200);
+        return success("$customers->name $status Successfully");
     }
-    public function passwordUpdate(Request $req, costomer $costomer, $id)
+    public function passwordUpdate(Request $req, customer $customer, $id)
     {
         //
-        $costomers = $costomer->find($id)->update([
+        $customers = $customer->find($id)->update([
             "password" => Hash::make($req->password)
         ]);
-        // $costomer->destroy($id);
+        // $customer->destroy($id);
 
-        return response(["$costomers Password Updated Successfully"]);
+        return success("$customers Password Updated Successfully");
     }
 
-    public function zoneUpdate(Request $req, costomer $costomer, $id)
+    public function zoneUpdate(Request $req, customer $customer, $id)
     {
         //
-        $costomer->find($id)->update([
+        $customer->find($id)->update([
             "zone" => $req->zone
         ]);
 
-        $costomers = $costomer->find($id)->first();
+        $customers = $customer->find($id)->first();
 
-        return response(["msg" => "$costomers->name zone Updated Successfully", "code" => 200]);
+        return success("$customers->name zone Updated Successfully");
     }
 
-    public function changeAvtar(Request $req, costomer $costomer, $id)
+    public function changeAvtar(Request $req, customer $customer, $id)
     {
         //
-        $costomer->find($id)->update([
-            "avtar" => storeFile($req, 'avtar', '/costomer/avtar/')
+        $customer->find($id)->update([
+            "avtar" => storeFile($req, 'avtar', '/customer/avtar/')
         ]);
 
-        $costomers = $costomer->find($id)->first();
+        $customers = $customer->find($id)->first();
 
-        return response(["msg" => "$costomers->name Avtar Updated Successfully", "code" => 200]);
+        return success("$customers->name Avtar Updated Successfully");
     }
 
-    public function changeDiscount(Request $req, costomer $costomer, $id)
+    public function changeDiscount(Request $req, customer $customer, $id)
     {
         //
-        $costomer->find($id)->update([
+        $customer->find($id)->update([
             "discount" => $req->discounts
         ]);
 
-        $costomers = $costomer->find($id)->first();
+        $customers = $customer->find($id)->first();
 
-        return response(["msg" => "$costomers->name Discount Updated Successfully", "code" => 200]);
+        return success("$customers->name Discount Updated Successfully");
     }
 }
 

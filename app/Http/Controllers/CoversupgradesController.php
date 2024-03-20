@@ -15,10 +15,7 @@ class CoversupgradesController extends Controller
     public function index()
     {
         //
-        return response([
-            'coversupgrades' => coversupgrades::all(),
-            'message' => 'Retrieved successfully'
-        ], 200);
+        return success('Retrieved successfully', coversupgrades::all());
     }
 
     /**
@@ -72,10 +69,7 @@ class CoversupgradesController extends Controller
         //     // return $color;
         // }
 
-        return response([
-            'success' => true,
-            'message' => 'Created successfully'
-        ], 200);
+        return created('Created successfully');
     }
 
     /**
@@ -112,20 +106,16 @@ class CoversupgradesController extends Controller
         //
         coversupgrades::find($id)->update([
             'name' => $request->name,
-            'cover_id' => $request->cover_id,
         ]);
 
-        if ($request->has('img')) {
+        if ($request->hasFile('img')) {
             coversupgrades::find($id)->update([
                 'img' => storeFile($request, 'img', '/img/coversupgrades/'),
             ]);
         }
 
-        $coversupgrades->save();
-        return response([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ], 200);
+        // $coversupgrades->save();
+        return success('Updated successfully');
     }
 
     /**
@@ -142,21 +132,15 @@ class CoversupgradesController extends Controller
 
         // Check if the coversupgrade record exists
         if (!$coversupgrade) {
-            return response([
-                'success' => false,
-                'message' => 'Record not found'
-            ], 404);
+            return success('Record not found');
         }
 
         // Delete related coversupgradecolors records
         $coversupgrade->coversupgradecolors()->delete();
 
         // Delete the coversupgrades record
-        $coversupgrade->delete();
+        $coversupgrade->destroy($id);
 
-        return response([
-            'success' => true,
-            'message' => 'Deleted successfully'
-        ], 200);
+        return success('Deleted successfully');
     }
 }

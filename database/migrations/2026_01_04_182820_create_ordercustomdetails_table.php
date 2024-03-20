@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('ordercustomdetails', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->enum('event_type', ["Wedding", "Pre-Wedding", "Engagement", "Birthdav", "Sweet 16", "Bar Mitzvah", "Bat Mitzvah", "Puberty Ceremony", "Baby Shower", "Portfolio", "Guestbook",])->default('wedding');
+            $table->enum('event_type', ["Wedding", "others", "Pre-Wedding", "Engagement", "Birthdav", "Sweet 16", "Bar Mitzvah", "Bat Mitzvah", "Puberty Ceremony", "Baby Shower", "Portfolio", "Guestbook",])->default('wedding');
+            $table->text('other_event_type')->nullable();
             $table->string('event_name');
             $table->date('event_date');
             $table->string('customizeMessage');

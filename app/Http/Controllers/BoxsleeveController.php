@@ -15,10 +15,7 @@ class BoxsleeveController extends Controller
     public function index()
     {
         //
-        return response([
-            'boxsleeve' => boxsleeve::all(),
-            'message' => 'Retrieved successfully'
-        ], 200);
+        return success("Retrived Successfully", boxsleeve::all());
     }
 
     /**
@@ -46,10 +43,7 @@ class BoxsleeveController extends Controller
         $boxsleeve->type = $request->type;
         $boxsleeve->save();
 
-        return response([
-            'success' => true,
-            'message' => 'Created successfully'
-        ], 200);
+        return created('Created successfully');
     }
 
     /**
@@ -86,6 +80,7 @@ class BoxsleeveController extends Controller
         //
         boxsleeve::find($id)->update([
             'name' => $request->name,
+            'type' => $request->type,
         ]);
 
         if ($request->hasFile('img')) {
@@ -94,10 +89,7 @@ class BoxsleeveController extends Controller
             ]);
         }
 
-        return response([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ], 200);
+        return success('Updated successfully');
     }
 
     /**
@@ -106,14 +98,11 @@ class BoxsleeveController extends Controller
      * @param  \App\Models\boxsleeve  $boxsleeve
      * @return \Illuminate\Http\Response
      */
-    public function destroy(boxsleeve $boxsleeve, $id)
+    public function destroy($id)
     {
         //
         boxsleeve::find($id)->delete();
 
-        return response([
-            'success' => true,
-            'message' => 'Deleted successfully'
-        ], 200);
+        return success('Deleted successfully');
     }
 }

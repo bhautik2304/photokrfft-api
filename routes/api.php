@@ -5,7 +5,7 @@ use App\Models\productSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authModule\authtication;
-use App\Http\Controllers\{AdminuserController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, OrientationController, PaperController, PrintingpriceController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SheetController, SizeController, StudioController};
+use App\Http\Controllers\{AdminuserController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, NotificationController, OrientationController, PaperController, PrintingpriceController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SampleOrderPermissionStatusController, SheetController, SizeController, StudioController};
 use App\Models\costomer;
 use App\Models\order;
 
@@ -32,23 +32,30 @@ Route::Post('auth/otpveryfi', [authtication::class, 'otpvery']);
 Route::Post('auth/session', [authtication::class, 'session']);
 
 //customer auth routes
-Route::Post('auth/costomer/login', [authtication::class, 'costomerlogin']);
-Route::Post('auth/costomer/token', [authtication::class, 'tokenVerify']);
-Route::Post('auth/costomer/forget-password', [authtication::class, 'forgetPasswordReq']);
-Route::Post('auth/costomer/forget-password/check-otp', [authtication::class, 'checkOtp']);
-Route::Post('auth/costomer/forget-password/set-password', [authtication::class, 'setPassword']);
+Route::prefix('auth/costomer/')->group(function () {
+    Route::Post('login', [authtication::class, 'customerlogin']);
+    Route::Post('token', [authtication::class, 'tokenVerify']);
+    Route::get('email/token', [authtication::class, 'emailVerify']);
+    Route::Post('forget-password', [authtication::class, 'forgetPasswordReq']);
+    Route::Post('forget-password/check-otp', [authtication::class, 'checkOtp']);
+    Route::Post('forget-password/set-password', [authtication::class, 'setPassword']);
+});
 
-Route::apiResource('adminusers',AdminuserController::class);
 
+Route::apiResource('adminusers', AdminuserController::class);
+Route::put('adminusers/update/{id}', [AdminuserController::class, 'update']);
 
-Route::apiResource('costomer', CostomerController::class);
-Route::post('costomer/approve/{id}', [CostomerController::class, 'aprovedReq']);
-Route::post('costomer/status/{id}', [CostomerController::class, 'statusUpdate']);
-Route::post('costomer/password/{id}', [CostomerController::class, 'passwordUpdate']);
-Route::post('costomer/zoneupdate/{id}', [CostomerController::class, 'zoneUpdate']);
-Route::post('costomer/change-avtar/{id}', [CostomerController::class, 'changeAvatar']);
-Route::post('costomer/fetch', [CostomerController::class, 'show']);
-Route::post('costomer/discount-update/{id}', [CostomerController::class, 'changeDiscount']);
+Route::prefix('costomer')->group(function () {
+    Route::apiResource('/', CostomerController::class);
+    Route::post('approve/{id}', [CostomerController::class, 'aprovedReq']);
+    Route::post('status/{id}', [CostomerController::class, 'statusUpdate']);
+    Route::post('password/{id}', [CostomerController::class, 'passwordUpdate']);
+    Route::post('zoneupdate/{id}', [CostomerController::class, 'zoneUpdate']);
+    Route::post('change-avtar/{id}', [CostomerController::class, 'changeAvatar']);
+    Route::post('fetch', [CostomerController::class, 'show']);
+    Route::post('discount-update/{id}', [CostomerController::class, 'changeDiscount']);
+});
+
 
 
 Route::apiResource('product', ProductController::class);
@@ -75,6 +82,7 @@ Route::post('covers/update/{id}', [CoversController::class, 'update']);
 Route::post('coversupgrades/update/{id}', [CoversupgradesController::class, 'update']);
 Route::post('colors/update/{id}', [ColorController::class, 'update']);
 Route::post('boxsleeve/update/{id}', [BoxsleeveController::class, 'update']);
+Route::post('boxsleeveupgrades/update/{id}', [BoxsleeveupgradeController::class, 'update']);
 Route::post('countryzone/update/{id}', [CountryzoneController::class, 'update']);
 
 Route::apiResource('product/productsize', ProductSizeController::class);
@@ -88,6 +96,9 @@ Route::apiResource('product/productboxsleeve', ProductboxsleeveController::class
 Route::apiResource('product/productboxsleeveprice', ProductboxsleevepriceController::class);
 
 // Route::post('product/create/{id}', [ProductController::class, 'createProductResource']);
+Route::get('notifications', [NotificationController::class, 'index']);
+Route::put('notifications/read', [NotificationController::class, 'update']);
+Route::delete('notifications/delete', [NotificationController::class, 'destroy']);
 
 // order routes
 Route::apiResource('order', OrderController::class);
@@ -96,6 +107,7 @@ Route::post('order/status/{id}', [OrderController::class, 'statusUpdate']);
 Route::post('order/uploadfile', [OrderController::class, 'orderFileSubmit']);
 Route::post('order/status/{id}/payment', [OrderController::class, 'PaymentstatusUpdate']);
 Route::post('order/delivery/{id}', [OrderController::class, 'deliveryPartnerUpdate']);
+Route::apiResource('order/sampleorderpermission', SampleOrderPermissionStatusController::class);
 
 
 // Route::any('test', function (Request $request) {

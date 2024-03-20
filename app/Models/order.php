@@ -52,7 +52,7 @@ class order extends Model
 
     public function costomer()
     {
-        return $this->hasOne(costomer::class, 'id', 'user_id');
+        return $this->hasOne(customer::class, 'id', 'user_id');
     }
 
     public function product()

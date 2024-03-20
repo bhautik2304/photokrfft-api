@@ -15,10 +15,7 @@ class SheetController extends Controller
     public function index()
     {
         //
-        return response([
-            'sheet' => sheet::all(),
-            'message' => 'Retrieved successfully'
-        ], 200);
+         return success('Retrived successfully',sheet::all());
     }
 
     /**
@@ -45,10 +42,7 @@ class SheetController extends Controller
         $sheet->img = storeFile($request, 'img', '/img/sheet/');
         $sheet->save();
 
-        return response([
-            'success' => true,
-            'message' => 'Created successfully'
-        ], 200);
+         return created('Created successfully');
     }
 
     /**
@@ -94,10 +88,7 @@ class SheetController extends Controller
             ]);
         }
 
-        return response([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ], 200);
+         return success('Updated successfully');
     }
 
     /**
@@ -112,10 +103,7 @@ public function destroy(sheet $sheets,$id)
         $sheet = sheet::find($id);
         $sheet->delete();
 
-        return response([
-            'success' => true,
-            'message' => 'Deleted successfully'
-        ], 200);
+         return success('Deleted successfully');
 
     }
 }

@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers;
 
+// set_time_limit(0);
+
 use App\Events\neworder;
 use App\Mail\orders\newOrderReceived;
 use App\Mail\orders\newOrderUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Models\{order, ordercustomdetail, orderdata};
+use App\Models\{order, ordercustomdetail, orderdata, sampleorderpermissionstatus};
+use App\Service\NotificationService;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        set_time_limit(80000000);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -19,10 +27,7 @@ class OrderController extends Controller
     public function index()
     {
         //
-        return response([
-            'orders' => order::all(),
-            'message' => 'Retrieved successfully',
-        ]);
+        return success('Retrieved successfully', order::all());
     }
 
     /**
@@ -64,35 +69,35 @@ class OrderController extends Controller
         $order->zone_id = $orderData->zone->id;
         $order->productValue = $orderData->orderTotale;
         $order->shippingValue = $orderData->zone->shipingcharge;
-        
+
         $order->productcovers_id = $orderData->productcover;
         $order->cover_type = $orderData->coverType;
         $order->coversupgrades_id = $orderData->productcoveroption;
         $order->coverupgradecolors_id = $orderData->productcovercolor;
-        
+
         $order->boxsleeve_id = $orderData->productboxSleev;
         $order->boxsleeve_type = $orderData->productboxandsleeveType; //$orderData->productboxandsleeveType;
         $order->boxsleeveupgrades_id = $orderData->productboxandsleeveoption;
         $order->boxsleevecolors_id = $orderData->productboxandsleevecolor;
-        
+
         $order->boxsleevefrontimg = storeFile($request, 'boxsleevefrontimg', '/order/boxsleevefront/');
         $order->boxsleevebacksideimg = storeFile($request, 'boxsleevebackimg', '/order/boxsleevefront/');
         $order->coverfrontimg = storeFile($request, 'coverfrontphoto', '/order/coverfront/');
         $order->coverbacksideimg = storeFile($request, 'coverbackphoto', '/order/coverfront/');
-        
+
         $order->is_sample = $orderData->isSample;
-        
+
         $order->album_book_copy_price = $orderData->photoBookCopyPrice;
         $order->is_album_book_copy = $orderData->isPhotoBookCopy;
         $order->album_book_copy_qty = $orderData->photoBookCopy;
-        
+
         $order->delivery_address = $orderData->delivery_address;
-        
+
         $order->sheetValue = $orderData->sheetValue;
         $order->paperValue = $orderData->paperValue;
         $order->coverValue = $orderData->coverValue;
         $order->boxSleeveValue = $orderData->boxSleeveValue;
-        
+
         $order->discount = $orderData->discount;
         $order->order_total = (int)$orderData->orderTotale += (int)$orderData->zone->shipingcharge;
         $order->save();
@@ -107,11 +112,21 @@ class OrderController extends Controller
         $ordercustomdetail->Imprinting = $orderData->orderDetaild->printing;
         $ordercustomdetail->save();
 
-        $msg = "New order received from Customer: " . $orderData->user->name . "! Order ID: " . $number . ", Amount: " . $orderData->zone->currency_sign . " " . $order->order_total . "!";
+        if ($order->is_sample) {
+            # code...
+            $sampleorder = new sampleorderpermissionstatus();
+            $sampleorder->orders_id = $order->id;
+            $sampleorder->customers_id = $order->user_id;
+            $sampleorder->products_id = $order->product_id;
+            $sampleorder->save();
+        }
+
+        $msg = "New order received from " . $orderData->user->name . " Order Number : " . $number . " & Amount " . $orderData->zone->currency_sign . " " . $order->order_total . "!";
 
         // Mail::to()->send(new newOrderReceived());
 
-        event(new neworder($msg));
+        $Notification = new NotificationService;
+        $Notification->createNotification($msg, config('notificationstatus.orders'));
 
         return response([
             'order' => $order,
@@ -131,10 +146,7 @@ class OrderController extends Controller
         //
         $ordersData = $order->where('user_id', $req->user_id)->get();
 
-        return response([
-            "data" => $ordersData,
-            "code" => 200
-        ], 200);
+        return success("User Order Retrived Successfully", $ordersData);
     }
 
     /**
@@ -181,10 +193,7 @@ class OrderController extends Controller
 
         // Mail::to($order->costomer->email)->send(new newOrderUpdate());
 
-        return response([
-            'order' => $order,
-            'message' => 'Order status updated successfully',
-        ]);
+        return success('Order status updated successfully');
     }
     public function deliveryPartnerUpdate(Request $request, $id)
     {
@@ -197,10 +206,7 @@ class OrderController extends Controller
 
         // Mail::to($order->costomer->email)->send(new newOrderUpdate());
 
-        return response([
-            'order' => $order,
-            'message' => 'Delivery Partner Detaild Store successfully',
-        ]);
+        return success('Delivery Partner Detaild Store successfully');
     }
 
     public function PaymentstatusUpdate(Request $request, $id)
@@ -213,10 +219,7 @@ class OrderController extends Controller
 
         // Mail::to($order->costomer->email)->send(new newOrderUpdate());
 
-        return response([
-            'order' => $order,
-            'message' => 'Order payment status updated successfully',
-        ]);
+        return success('Order payment status updated successfully');
     }
 
     public function orderFileSubmit(Request $req, orderdata $orderdata, order $order)

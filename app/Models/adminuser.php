@@ -15,6 +15,8 @@ class adminuser extends Model
         "profile_photo",
         "email",
         "password",
-        "token"
+        "token",
+        "role",
+        "email_veryfi"
     ];
 }

@@ -16,7 +16,7 @@ class ColorController extends Controller
     {
         //
 
-        return response(["data" => color::all()], 200);
+        return success("Retrived All Colors", color::all());
     }
 
     /**
@@ -40,10 +40,10 @@ class ColorController extends Controller
         //
         $color = new color();
         $color->color = $request->color;
-        $color->img = storeFile($request,'color_img','/img/colors/');
+        $color->img = storeFile($request, 'color_img', '/img/colors/');
         $color->save();
 
-        return response(["msg"=>"Color save successfully"],200);
+        return created("Color save successfully");
     }
 
     /**
@@ -75,9 +75,19 @@ class ColorController extends Controller
      * @param  \App\Models\color  $color
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, color $color)
+    public function update(Request $request, $id)
     {
         //
+        color::find($id)->update([
+            "color"=>$request->color
+        ]);
+
+        if ($request->hasFile('color_img')) {
+            color::find($id)->update([
+                'img' => storeFile($request, 'color_img', '/img/colors/')
+            ]);
+        }
+        return success("Updated Successfully");
     }
 
     /**
@@ -86,8 +96,11 @@ class ColorController extends Controller
      * @param  \App\Models\color  $color
      * @return \Illuminate\Http\Response
      */
-    public function destroy(color $color)
+    public function destroy($id)
     {
         //
+        color::destroy($id);
+
+        return success("Deleted Successfully");
     }
 }

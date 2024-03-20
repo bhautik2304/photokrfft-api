@@ -15,11 +15,7 @@ class SizeController extends Controller
     public function index()
     {
         //
-        return response([
-            'sizes' => Size::all(),
-            'message' => 'Retrieved successfully',
-            'success' => true,
-        ], 200);
+        return success("Retrived Succefully",Size::all());
     }
 
     /**
@@ -46,11 +42,7 @@ class SizeController extends Controller
         $size->img = storeFile($request, 'img', '/img/size/');
         $size->save();
 
-        return response([
-            'size' => $size,
-            'message' => 'Created successfully',
-            'success' => true,
-        ], 200);
+        return created("Created Successfully");
     }
 
     /**
@@ -96,10 +88,7 @@ class SizeController extends Controller
             ]);
         }
 
-        return response([
-            'message' => 'Updated successfully',
-            'success' => true,
-        ], 200);
+        return success('Updated successfully');
     }
 
     /**
@@ -108,13 +97,10 @@ class SizeController extends Controller
      * @param  \App\Models\Size  $size
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Size $size,$id)
+    public function destroy(Size $size, $id)
     {
         //
         Size::find($id)->delete();
-        return response([
-            'message' => 'Deleted successfully',
-            'success' => true,
-        ], 200);
+        return success('Deleted successfully');
     }
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text("profile_photo")->nullable();
             $table->text("email");
             $table->text("token")->nullable();
+            $table->text("accesstoken")->nullable();
             $table->text("password")->nullable();
             $table->boolean("email_veryfi")->default(false);
             $table->boolean("phone_veryfi")->default(false);

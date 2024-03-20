@@ -15,10 +15,7 @@ class CountryzoneController extends Controller
     public function index()
     {
         //
-        return response([
-            'countryzone' => countryzone::all(),
-            'message' => 'Retrieved successfully'
-        ], 200);
+        return success('Retrieved successfully', countryzone::all());
     }
 
     /**
@@ -41,17 +38,13 @@ class CountryzoneController extends Controller
     {
         //
         $countryzone = new countryzone();
-        $countryzone->zonename	 = $request->name;
+        $countryzone->zonename     = $request->name;
         $countryzone->shipingcharge = $request->shipingcharge;
         $countryzone->currency_sign = $request->currency_sign;
         $countryzone->img = storeFile($request, 'img', '/img/countryzone/');
         $countryzone->save();
 
-        return response([
-            'success' => true,
-            'message' => 'Created successfully'
-        ], 200);
-
+        return created('Created successfully');
     }
 
     /**
@@ -86,12 +79,12 @@ class CountryzoneController extends Controller
     public function update(Request $request, countryzone $countryzone, $id)
     {
         //
-        $res=countryzone::find($id)->update([
+        $res = countryzone::find($id)->update([
             'zonename' => $request->zonename,
             'shipingcharge' => $request->shipingcharge,
             'currency_sign' => $request->currency_sign,
         ]);
-        
+
         // return $res;
 
         if ($request->hasFile('img')) {
@@ -100,10 +93,7 @@ class CountryzoneController extends Controller
             ]);
         }
 
-        return response([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ], 200);
+        return created('Updated successfully');
     }
 
     /**
@@ -112,14 +102,11 @@ class CountryzoneController extends Controller
      * @param  \App\Models\countryzone  $countryzone
      * @return \Illuminate\Http\Response
      */
-public function destroy($id)
+    public function destroy($id)
     {
         //
         countryzone::find($id)->delete();
 
-        return response([
-            'success' => true,
-            'message' => 'Deleted successfully'
-        ], 200);
+        return success('Deleted successfully');
     }
 }

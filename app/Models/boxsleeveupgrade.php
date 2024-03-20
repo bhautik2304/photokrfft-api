@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\{Model, Builder};
 
 class boxsleeveupgrade extends Model
 {
+
+
+    protected $fillable = [
+        "name",
+        "img",
+    ];
+
     use HasFactory;
     protected static function booted(): void
     {

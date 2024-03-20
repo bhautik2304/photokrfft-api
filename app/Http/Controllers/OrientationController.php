@@ -15,7 +15,7 @@ class OrientationController extends Controller
     public function index()
     {
         //
-        return response(['success' => true, 'message' => 'Orientation list', 'data' => orientation::all()], 200);
+        return success('Orientation list', orientation::all());
     }
 
     /**
@@ -47,7 +47,7 @@ class OrientationController extends Controller
         $orientation->img = storeFile($req, 'img', '/img/orientation/');
         $orientation->save();
 
-        return response(['success' => true, 'message' => 'Orientation created', 'data' => $orientation], 201);
+        return created('Orientation Created Successfully');
     }
 
     /**
@@ -95,7 +95,7 @@ class OrientationController extends Controller
             ]);
         }
 
-        return response(['success' => true, 'message' => 'Orientation updated'], 200);
+        return success('Orientation updated');
     }
 
     /**
@@ -108,6 +108,7 @@ class OrientationController extends Controller
     {
         //
         $orientations->find($id)->delete();
-        return response(['success' => true, 'message' => 'Orientation deleted'], 200);
+        
+        return success('Orientation deleted');
     }
 }

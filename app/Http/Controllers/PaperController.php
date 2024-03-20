@@ -15,10 +15,7 @@ class PaperController extends Controller
     public function index()
     {
         //
-        return response([
-            'paper' => paper::all(),
-            'message' => 'Retrieved successfully'
-        ], 200);
+        return success('Retrieved successfully', paper::all());
     }
 
     /**
@@ -46,10 +43,7 @@ class PaperController extends Controller
         $paper->img = storeFile($request, 'img', '/img/paper/');
         $paper->save();
 
-        return response([
-            'success' => true,
-            'message' => 'Created successfully'
-        ], 200);
+        return created('Created successfully');
     }
 
     /**
@@ -96,10 +90,7 @@ class PaperController extends Controller
             ]);
         }
 
-        return response([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ], 200);
+        return success('Updated successfully');
     }
 
     /**
@@ -113,9 +104,6 @@ class PaperController extends Controller
         //
         $papers->find($id)->delete();
 
-        return response([
-            'success' => true,
-            'message' => 'Deleted successfully'
-        ], 200);
+        return success('Deleted successfully');
     }
 }

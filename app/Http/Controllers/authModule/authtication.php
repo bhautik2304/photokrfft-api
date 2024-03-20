@@ -4,7 +4,7 @@ namespace App\Http\Controllers\authModule;
 
 use App\Http\Controllers\Controller;
 use App\Mail\auth\sendResetPasswordOtp;
-use App\Models\{adminuser, costomer};
+use App\Models\{adminuser, customer};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -13,6 +13,35 @@ use Illuminate\Support\Str;
 class authtication extends Controller
 {
     //
+
+    public function adminEmailVerifications($token) {
+        $users = adminuser::where('accesstoken',$token)->first();
+
+        if (!$users) {
+            # code...
+            return "invalid access token";
+        }
+
+        $users->update([
+            "email_veryfi"=>true
+        ]);
+
+        return redirect("http://localhost:3000/");
+    }
+    public function customerEmailVerifications($token) {
+        $users = customer::where('access_token',$token)->first();
+
+        if (!$users) {
+            # code...
+            return "invalid access token";
+        }
+
+        $users->update([
+            "email_veryfi"=>true
+        ]);
+
+        return redirect("http://localhost:3000/");
+    }
 
     public function session(Request $req)
     {
@@ -46,6 +75,11 @@ class authtication extends Controller
             return response(["msg" => "Users Not Found", "code" => 404], 200);
         }
 
+        if (!$users->email_veryfi) {
+            # code...
+            return response(["msg" => "Pls Verify Your Email id", "code" => 404], 200);
+        }
+
         // if (!($req->password == $users->password)) {
         //     # code...
         //     return response(["msg" => "Wrong Password", "code" => 404], 200);
@@ -68,31 +102,36 @@ class authtication extends Controller
             "accessToken" => $token,
         ], 200);
     }
-    public function costomerlogin(Request $req)
+    public function customerlogin(Request $req)
     {
-        $users = costomer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
+        $users = customer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
 
 
         if (!$users) {
             # code...
             return response(["msg" => "Users Not Found", "code" => 404], 200);
         }
-
+        
+        
         if (!Hash::check($req->password, $users->password)) {
             # code...
             return response(["msg" => "Wrong Password", "code" => 404], 200);
         }
-
+        
         if ($users->approved == 0) {
             # code...
             return response(["msg" => "Your account is under verification for approvals", "code" => 404], 200);
         }
-
+        
         if ($users->status == 0) {
             # code...
             return response(["msg" => "Your Account is not Active", "code" => 404], 200);
         }
-
+        
+        if (!$users->email_veryfi) {
+            # code...
+            return response(["msg" => "Pls Veryfi Your Email Id", "code" => 404], 200);
+        }
 
         $token = Str::random(60);
 
@@ -114,7 +153,7 @@ class authtication extends Controller
     }
     public function tokenVerify(Request $req)
     {
-        $users = costomer::where('token', $req->token)->first();
+        $users = customer::where('token', $req->token)->first();
 
 
         if (!$users) {
@@ -132,26 +171,26 @@ class authtication extends Controller
             return response(["msg" => "Your Account is Not approved", "code" => 404], 200);
         }
 
-        $token = Str::random(60);
+        // $token = Str::random(60);
 
-        $users->update([
-            "token" => $token,
-        ]);
+        // $users->update([
+        //     "token" => $token,
+        // ]);
         // dd($users->toArray());
 
         return response([
             "msg" => "Login Successfully",
             "code" => 200,
             "user" => $users,
-            "token" => $token,
+            "token" => $users->token,
         ], 200);
     }
 
-    public function forgetPasswordReq(Request $req, costomer $costomer)
+    public function forgetPasswordReq(Request $req, customer $customer)
     {
         //Write function code hear
 
-        $users = costomer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
+        $users = customer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
 
         $email = $users->email;
 
@@ -177,11 +216,11 @@ class authtication extends Controller
 
     // check otp
 
-    public function checkOtp(Request $req, costomer $costomer)
+    public function checkOtp(Request $req, customer $customer)
     {
         //Write function code hear
 
-        $users = costomer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
+        $users = customer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
 
         if (!$users) {
             # code...
@@ -197,11 +236,11 @@ class authtication extends Controller
     }
 
 
-    public function setPassword(Request $req, costomer $costomer)
+    public function setPassword(Request $req, customer $customer)
     {
         //Write function code hear
 
-        $users = costomer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
+        $users = customer::where('email', $req->email)->orWhere('phone_no', $req->email)->first();
 
         if (!$users) {
             # code . . .

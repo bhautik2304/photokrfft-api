@@ -15,10 +15,7 @@ class CoversController extends Controller
     public function index()
     {
         //
-        return response([
-            'covers' => covers::all(),
-            'message' => 'Retrieved successfully'
-        ], 200);
+        return success('Retrieved successfully',covers::all());
     }
 
     /**
@@ -46,10 +43,7 @@ class CoversController extends Controller
         $covers->img = storeFile($request, 'img', '/img/covers/');
         $covers->save();
 
-        return response([
-            'success' => true,
-            'message' => 'Created successfully'
-        ], 200);
+        return created('Created successfully');
     }
 
     /**
@@ -94,10 +88,7 @@ class CoversController extends Controller
                 'img' => storeFile($request, 'img', '/img/covers/'),
             ]);
 
-        return response([
-            'success' => true,
-            'message' => 'Updated successfully'
-        ], 200);
+        return success('Updated successfully');
     }
 
     /**
@@ -111,9 +102,6 @@ class CoversController extends Controller
         //
         $covers->find($id)->delete();
 
-        return response([
-            'success' => true,
-            'message' => 'Deleted successfully'
-        ], 200);
+        return success('Deleted successfully');
     }
 }

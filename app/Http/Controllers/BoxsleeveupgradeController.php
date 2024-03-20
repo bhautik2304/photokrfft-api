@@ -17,7 +17,7 @@ class BoxsleeveupgradeController extends Controller
     {
         //
 
-        return response(["boxsleeveupgrade" => boxsleeveupgrade::all()], 200);
+        return success("Retrived All",boxsleeveupgrade::all());
     }
 
     /**
@@ -56,7 +56,7 @@ class BoxsleeveupgradeController extends Controller
             }
         }
 
-        return response(["msg" => "save successfully"], 200);
+        return created("$boxsleeveupgrade->name save successfully");
     }
 
     /**
@@ -88,9 +88,23 @@ class BoxsleeveupgradeController extends Controller
      * @param  \App\Models\boxsleeveupgrade  $boxsleeveupgrade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, boxsleeveupgrade $boxsleeveupgrade)
+    public function update(Request $request,$id)
     {
         //
+
+        boxsleeveupgrade::find($id)->update([
+            'name' => $request->name,
+        ]);
+
+        if ($request->hasFile('img')) {
+            boxsleeveupgrade::find($id)->update([
+                'img' => storeFile($request, 'img', '/img/boxsleeveupgrades/')
+            ]);
+        }
+
+        // $coversupgrades->save();
+        return success('Updated successfully');
+
     }
 
     /**
@@ -99,8 +113,12 @@ class BoxsleeveupgradeController extends Controller
      * @param  \App\Models\boxsleeveupgrade  $boxsleeveupgrade
      * @return \Illuminate\Http\Response
      */
-    public function destroy(boxsleeveupgrade $boxsleeveupgrade)
+    public function destroy($id)
     {
         //
+
+        boxsleeveupgrade::destroy($id);
+
+        return success('Deleted successfully');
     }
 }
