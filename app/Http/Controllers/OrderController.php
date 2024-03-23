@@ -106,6 +106,7 @@ class OrderController extends Controller
         $ordercustomdetail = new ordercustomdetail;
         $ordercustomdetail->order_id = $order->id;
         $ordercustomdetail->event_type = $orderData->orderDetaild->eventType;
+        $ordercustomdetail->other_event_type = $orderData->orderDetaild->otherEvent;
         $ordercustomdetail->event_name = $orderData->orderDetaild->eventName;
         $ordercustomdetail->event_date = $orderData->orderDetaild->eventDate;
         $ordercustomdetail->customizeMessage = $orderData->orderDetaild->costumizeMessage;
