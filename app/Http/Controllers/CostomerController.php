@@ -79,7 +79,7 @@ class costomerController extends Controller
 
         try {
             //code...
-            Mail::to($customer->email)->send(new emailverify(route('customeremailveryfy',$token)));
+            Mail::to($customer->email)->send(new emailverify("https://api.photokrafft.com/customer/emailveryfy/$token"));
         } catch (\Throwable $th) {
             //throw $th;
         }

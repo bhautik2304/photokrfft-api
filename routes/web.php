@@ -23,10 +23,8 @@ use Illuminate\Support\Facades\{Route, Mail};
 */
 
 Route::get('/', function () {
-
-    $orders = order::find(1)->first();
     // // dd($orders);
-    Mail::to($orders->costomer->email)->send(new emailverify("https://meet.google.com/"));
+    Mail::to("tifamtifins@gmail.com")->send(new emailverify("https://meet.google.com/"));
     return 0;
 });
 
