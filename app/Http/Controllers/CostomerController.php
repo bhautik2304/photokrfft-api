@@ -77,7 +77,12 @@ class costomerController extends Controller
         $customer->access_token=$token;
         $customer->save();
 
-        Mail::to($customer->email)->send(new emailverify(route('customeremailveryfy',$token)));
+        try {
+            //code...
+            Mail::to($customer->email)->send(new emailverify(route('customeremailveryfy',$token)));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         // Mail::to()->send(new newCustomerRequiest());
 
         $Notification =new NotificationService;
