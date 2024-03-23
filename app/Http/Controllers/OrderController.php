@@ -16,7 +16,7 @@ class OrderController extends Controller
 {
     public function __construct()
     {
-        set_time_limit(80000000);
+        set_time_limit(0);
     }
 
     /**
@@ -135,6 +135,35 @@ class OrderController extends Controller
         ]);
     }
 
+    public function upload(Request $req,order $order)
+    {
+        $orderId = $order->where('order_no', $req->orderNo)->first()->id;
+        $orderdata = new orderdata;
+        $orderdata->order_id = $orderId;
+        $orderdata->source_link = $req->source_link;
+        $orderdata->save();
+        return response([
+            "msg" => "Your File Successfully Store",
+            "code" => 200
+        ], 200);
+    }
+
+    private function mergeChunks($fileName, $totalChunks)
+    {
+        $finalPath = storage_path('app/uploads/' . $fileName);
+        $finalFile = fopen($finalPath, 'ab');
+
+        for ($i = 0; $i < $totalChunks; $i++) {
+            $chunkPath = storage_path('app/temp/' . $fileName . '-' . $i);
+            $chunkFile = fopen($chunkPath, 'rb');
+            stream_copy_to_stream($chunkFile, $finalFile);
+            fclose($chunkFile);
+            unlink($chunkPath);
+        }
+
+        fclose($finalFile);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -226,21 +255,10 @@ class OrderController extends Controller
     {
 
         $orderId = $order->where('order_no', $req->orderNo)->first()->id;
-        if ($req->sourceType == 'Zip File') {
-            # code...
-            $orderdata = new orderdata;
-            $orderdata->order_id = $orderId;
-            $orderdata->sourcetype = $req->sourceType;
-            $orderdata->source_link = storeFile($req, 'photos_file', '/order/photos/');
-            $orderdata->save();
-        } else {
-            # code...
-            $orderdata = new orderdata;
-            $orderdata->order_id = $orderId;
-            $orderdata->sourcetype = $req->sourceType;
-            $orderdata->source_link = $req->photos_url;
-            $orderdata->save();
-        }
+        $orderdata = new orderdata;
+        $orderdata->order_id = $orderId;
+        $orderdata->source_link = $req->source_link;
+        $orderdata->save();
         if ($req->sourceType == 'Zip File') {
             return response([
                 "msg" => "Your File Successfully Store",

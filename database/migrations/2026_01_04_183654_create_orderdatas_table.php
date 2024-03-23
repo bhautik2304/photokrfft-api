@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('orderdatas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('orders')->onDelete('cascade');
-            $table->enum('sourcetype', ['Zip File', 'Third Party']);
+            // $table->enum('sourcetype', ['Zip File', 'Third Party']);
             $table->text('source_link');
             $table->timestamps();
         });

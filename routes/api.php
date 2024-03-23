@@ -104,7 +104,7 @@ Route::delete('notifications/delete', [NotificationController::class, 'destroy']
 Route::apiResource('order', OrderController::class);
 Route::post('order/user_order', [OrderController::class, 'show']);
 Route::post('order/status/{id}', [OrderController::class, 'statusUpdate']);
-Route::post('order/uploadfile', [OrderController::class, 'orderFileSubmit']);
+Route::post('order/uploadfile', [OrderController::class, 'upload']);
 Route::post('order/status/{id}/payment', [OrderController::class, 'PaymentstatusUpdate']);
 Route::post('order/delivery/{id}', [OrderController::class, 'deliveryPartnerUpdate']);
 Route::apiResource('order/sampleorderpermission', SampleOrderPermissionStatusController::class);
