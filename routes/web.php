@@ -22,9 +22,9 @@ use Illuminate\Support\Facades\{Route, Mail};
 
 Route::get('/', function () {
 
-    $orders = order::find(1)->first();
-    // dd($orders);
-    Mail::to($orders->costomer->email)->send(new deliveryNotification($orders));
+    // $orders = order::find(1)->first();
+    // // dd($orders);
+    // Mail::to($orders->costomer->email)->send(new deliveryNotification($orders));
     return 0;
 });
 
