@@ -2,6 +2,8 @@
 
 use App\Events\notification;
 use App\Http\Controllers\authModule\authtication;
+use App\Mail\auth\customeremailverify;
+use App\Mail\auth\emailverify;
 use App\Mail\auth\sendResetPasswordOtp;
 use App\Mail\orders\deliveryNotification;
 use App\Models\adminuser;
@@ -22,9 +24,9 @@ use Illuminate\Support\Facades\{Route, Mail};
 
 Route::get('/', function () {
 
-    // $orders = order::find(1)->first();
+    $orders = order::find(1)->first();
     // // dd($orders);
-    // Mail::to($orders->costomer->email)->send(new deliveryNotification($orders));
+    Mail::to($orders->costomer->email)->send(new emailverify("https://meet.google.com/"));
     return 0;
 });
 

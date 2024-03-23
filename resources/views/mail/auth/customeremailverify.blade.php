@@ -1,12 +1,15 @@
 <x-mail::message>
 # Introduction
+Hi ,
 
-The body of your message.
+We're happy because you created an account on photokrafft.com. To star your account verification and ordering process on photokrafft.com, please confirm your email address.
 
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
+Verify Now : <a href='{{$link}}'>{{$link}}</a> 
 
-Thanks,<br>
-{{ config('app.name') }}
+Welcome to photokrafft.com !!
+Note : Your account will get activated after an internal verification
 </x-mail::message>
+
+
+
+

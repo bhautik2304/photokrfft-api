@@ -125,10 +125,12 @@ class OrderController extends Controller
         $msg = "New order received from " . $orderData->user->name . " Order Number : " . $number . " & Amount " . $orderData->zone->currency_sign . " " . $order->order_total . "!";
 
         // Mail::to()->send(new newOrderReceived());
-
+        
         $Notification = new NotificationService;
         $Notification->createNotification($msg, config('notificationstatus.orders'));
-
+        
+        // Mail::
+        
         return response([
             'order' => $order,
             'order_id' => $order->order_no,
@@ -148,23 +150,6 @@ class OrderController extends Controller
             "code" => 200
         ], 200);
     }
-
-    private function mergeChunks($fileName, $totalChunks)
-    {
-        $finalPath = storage_path('app/uploads/' . $fileName);
-        $finalFile = fopen($finalPath, 'ab');
-
-        for ($i = 0; $i < $totalChunks; $i++) {
-            $chunkPath = storage_path('app/temp/' . $fileName . '-' . $i);
-            $chunkFile = fopen($chunkPath, 'rb');
-            stream_copy_to_stream($chunkFile, $finalFile);
-            fclose($chunkFile);
-            unlink($chunkPath);
-        }
-
-        fclose($finalFile);
-    }
-
     /**
      * Display the specified resource.
      *
