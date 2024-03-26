@@ -40,7 +40,7 @@ class authtication extends Controller
             "email_veryfi"=>true
         ]);
 
-        return redirect("http://localhost:3000/");
+        return redirect("https://photokrafft.com/Login");
     }
 
     public function session(Request $req)
