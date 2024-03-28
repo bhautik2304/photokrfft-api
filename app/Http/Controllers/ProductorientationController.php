@@ -36,12 +36,12 @@ class ProductorientationController extends Controller
     public function store(Request $request)
     {
         //
-        $productorientation= new productorientation();
-        $productorientation->product_id= $request->product_id;
-        $productorientation->orientation_id= $request->orientation_id;
+        $productorientation = new productorientation();
+        $productorientation->product_id = $request->product_id;
+        $productorientation->orientation_id = $request->orientation_id;
         $productorientation->save();
 
-        return response(["msg"=>"orientation Add Successfully"],200);
+        return response(["msg" => "orientation Add Successfully"], 200);
     }
 
     /**
@@ -84,8 +84,10 @@ class ProductorientationController extends Controller
      * @param  \App\Models\productorientation  $productorientation
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productorientation $productorientation)
+    public function destroy(productorientation $productorientati, $id)
     {
         //
+        $productorientati->destroy($id);
+        return success("Deleted Successfully");
     }
 }

@@ -14,7 +14,7 @@ class ProductpapperController extends Controller
      */
     public function index()
     {
-        // 
+        //
     }
 
     /**
@@ -42,7 +42,7 @@ class ProductpapperController extends Controller
         $product_paper->paper_id =  $request->paper_id;
         $product_paper->save();
 
-        return response(["msg"=>"Product Paper Add Successfully"]);
+        return response(["msg" => "Product Paper Add Successfully"]);
     }
 
     /**
@@ -85,8 +85,10 @@ class ProductpapperController extends Controller
      * @param  \App\Models\productpaper  $productpaper
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productpaper $productpaper)
+    public function destroy(productpaper $productpape, $id)
     {
         //
+        $productpape->destroy($id);
+        return success("Deleted Successfully");
     }
 }

@@ -16,7 +16,7 @@ class ProductboxsleeveController extends Controller
     public function index()
     {
         //
-        
+
     }
 
     /**
@@ -43,7 +43,7 @@ class ProductboxsleeveController extends Controller
         $productboxsleeve->boxsleeve_id = $request->boxsleeve_id;
         $productboxsleeve->save();
 
-        return response(["msg"=>"Product Sleev Add"],200);
+        return response(["msg" => "Product Sleev Add"], 200);
     }
 
     /**
@@ -86,8 +86,11 @@ class ProductboxsleeveController extends Controller
      * @param  \App\Models\productboxsleeve  $productboxsleeve
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productboxsleeve $productboxsleeve)
+    public function destroy(productboxsleeve $productboxsleev, $id)
     {
         //
+        $productboxsleev->destroy($id);
+
+        return success("Deleted Successfully");
     }
 }

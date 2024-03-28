@@ -27,9 +27,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 // admin auth routes
-Route::Post('auth/login', [authtication::class, 'login']);
-Route::Post('auth/otpveryfi', [authtication::class, 'otpvery']);
-Route::Post('auth/session', [authtication::class, 'session']);
+Route::prefix('auth')->group(function () {
+    Route::Post('login', [authtication::class, 'login']);
+    Route::Post('otpveryfi', [authtication::class, 'otpvery']);
+    Route::Post('session', [authtication::class, 'session']);
+});
 
 //customer auth routes
 Route::prefix('auth/costomer/')->group(function () {
@@ -45,9 +47,10 @@ Route::prefix('auth/costomer/')->group(function () {
 Route::apiResource('adminusers', AdminuserController::class);
 Route::put('adminusers/update/{id}', [AdminuserController::class, 'update']);
 
+Route::apiResource('costomer', CostomerController::class);
 Route::prefix('costomer')->group(function () {
-    Route::apiResource('/', CostomerController::class);
     Route::post('approve/{id}', [CostomerController::class, 'aprovedReq']);
+    Route::post('emailverifi/{id}', [CostomerController::class, 'emailverifi']);
     Route::post('status/{id}', [CostomerController::class, 'statusUpdate']);
     Route::post('password/{id}', [CostomerController::class, 'passwordUpdate']);
     Route::post('zoneupdate/{id}', [CostomerController::class, 'zoneUpdate']);
@@ -55,7 +58,6 @@ Route::prefix('costomer')->group(function () {
     Route::post('fetch', [CostomerController::class, 'show']);
     Route::post('discount-update/{id}', [CostomerController::class, 'changeDiscount']);
 });
-
 
 
 Route::apiResource('product', ProductController::class);
@@ -85,29 +87,35 @@ Route::post('boxsleeve/update/{id}', [BoxsleeveController::class, 'update']);
 Route::post('boxsleeveupgrades/update/{id}', [BoxsleeveupgradeController::class, 'update']);
 Route::post('countryzone/update/{id}', [CountryzoneController::class, 'update']);
 
-Route::apiResource('product/productsize', ProductSizeController::class);
-Route::apiResource('product/productorientation', ProductorientationController::class);
-Route::apiResource('product/sheet', ProductsheetController::class);
-Route::apiResource('product/productshetprice', ProductsheetpriceController::class);
-Route::apiResource('product/productpaper', ProductpapperController::class);
-Route::apiResource('product/productcover', ProductcoversController::class);
-Route::apiResource('product/productcoverprice', ProductCoversPriceController::class);
-Route::apiResource('product/productboxsleeve', ProductboxsleeveController::class);
-Route::apiResource('product/productboxsleeveprice', ProductboxsleevepriceController::class);
+Route::prefix('product')->group(function () {
+    Route::apiResource('productorientation', ProductorientationController::class);
+    Route::apiResource('productsize', ProductSizeController::class);
+    Route::apiResource('sheet', ProductsheetController::class);
+    Route::apiResource('productshetprice', ProductsheetpriceController::class);
+    Route::apiResource('productpaper', ProductpapperController::class);
+    Route::apiResource('productcover', ProductcoversController::class);
+    Route::apiResource('productcoverprice', ProductCoversPriceController::class);
+    Route::apiResource('productboxsleeve', ProductboxsleeveController::class);
+    Route::apiResource('productboxsleeveprice', ProductboxsleevepriceController::class);
+});
 
 // Route::post('product/create/{id}', [ProductController::class, 'createProductResource']);
-Route::get('notifications', [NotificationController::class, 'index']);
-Route::put('notifications/read', [NotificationController::class, 'update']);
-Route::delete('notifications/delete', [NotificationController::class, 'destroy']);
+Route::prefix('notifications')->group(function () {
+    Route::get('/', [NotificationController::class, 'index']);
+    Route::put('read', [NotificationController::class, 'update']);
+    Route::delete('delete', [NotificationController::class, 'destroy']);
+});
 
 // order routes
-Route::apiResource('order', OrderController::class);
-Route::post('order/user_order', [OrderController::class, 'show']);
-Route::post('order/status/{id}', [OrderController::class, 'statusUpdate']);
-Route::post('order/uploadfile', [OrderController::class, 'upload']);
-Route::post('order/status/{id}/payment', [OrderController::class, 'PaymentstatusUpdate']);
-Route::post('order/delivery/{id}', [OrderController::class, 'deliveryPartnerUpdate']);
-Route::apiResource('order/sampleorderpermission', SampleOrderPermissionStatusController::class);
+Route::prefix('order')->group(function () {
+    Route::apiResource('/', OrderController::class);
+    Route::post('user_order', [OrderController::class, 'show']);
+    Route::post('status/{id}', [OrderController::class, 'statusUpdate']);
+    Route::post('uploadfile', [OrderController::class, 'upload']);
+    Route::post('status/{id}/payment', [OrderController::class, 'PaymentstatusUpdate']);
+    Route::post('delivery/{id}', [OrderController::class, 'deliveryPartnerUpdate']);
+    Route::apiResource('sampleorderpermission', SampleOrderPermissionStatusController::class);
+});
 
 
 // Route::any('test', function (Request $request) {

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\auth\emailverify;
 use App\Service\NotificationService;
+use App\Mail\customer\customerUpdate;
 use App\Mail\customer\newCustomerRequiest;
 use Illuminate\Support\Facades\{Hash, Mail};
 
@@ -56,7 +57,7 @@ class costomerController extends Controller
             return response(["msg" => "This mobile is already registered", "code" => 444], 202);
         }
 
-        $token=Str::random(32);
+        $token = Str::random(32);
 
         $customer = new customer;
         $customer->name = $req->name;
@@ -73,8 +74,8 @@ class costomerController extends Controller
         $customer->compunys_logo = storeFile($req, 'compunys_logo', '/brand/logo/');
         $customer->social_link_1 = $req->social_link_1;
         $customer->social_link_2 = $req->social_link_2;
-        
-        $customer->access_token=$token;
+
+        $customer->access_token = $token;
         $customer->save();
 
         try {
@@ -85,8 +86,8 @@ class costomerController extends Controller
         }
         // Mail::to()->send(new newCustomerRequiest());
 
-        $Notification =new NotificationService;
-        $Notification->createNotification("$customer->name has sent a new customer request",config('notificationstatus.customer'));
+        $Notification = new NotificationService;
+        $Notification->createNotification("$customer->name has sent a new customer request", config('notificationstatus.customer'));
 
         return created("$customer->name You are Register Successfully");
     }
@@ -106,7 +107,13 @@ class costomerController extends Controller
         ]);
 
         $customerreq->find($id)->first();
-        // Mail::to($customerreq->email)->send(new customerUpdate($customerreq->name));
+
+        try {
+            //code...
+            Mail::to($customerreq->email)->send(new customerUpdate($customerreq->name));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return success("Approved");
     }
@@ -222,6 +229,17 @@ class costomerController extends Controller
         $customers = $customer->find($id)->first();
 
         return success("$customers->name Discount Updated Successfully");
+    }
+    public function emailverifi(Request $req, customer $customer, $id)
+    {
+        //
+        $customer->find($id)->update([
+            "email_veryfi" => $req->status
+        ]);
+
+        $customers = $customer->find($id)->first();
+
+        return success("$customers->name Email Veryfi Successfully");
     }
 }
 

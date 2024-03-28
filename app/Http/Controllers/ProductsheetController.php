@@ -38,12 +38,12 @@ class ProductsheetController extends Controller
     {
         //
 
-        $productsheet =new productsheet;
+        $productsheet = new productsheet;
         $productsheet->product_size_id = $request->product_size_id;
         $productsheet->sheet_id = $request->sheet_id;
-        $productsheet->save(); 
- 
-        return response(["msg"=>"Product Sheet add"],200);
+        $productsheet->save();
+
+        return response(["msg" => "Product Sheet add"], 200);
     }
 
     /**
@@ -86,8 +86,10 @@ class ProductsheetController extends Controller
      * @param  \App\Models\productsheet  $productsheet
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productsheet $productsheet)
+    public function destroy(productsheet $productsheet, $id)
     {
         //
+        $productsheet->destroy($id);
+        return success("Deleted Success");
     }
 }

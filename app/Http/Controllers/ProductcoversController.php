@@ -37,12 +37,12 @@ class ProductcoversController extends Controller
     {
         //
 
-        $productcover=new productcovers();
+        $productcover = new productcovers();
         $productcover->product_size_id = $request->product_size_id;
         $productcover->cover_id = $request->cover_id;
         $productcover->save();
- 
-        return response(["msg"=>"Product Cover Add Successfully"],200);
+
+        return response(["msg" => "Product Cover Add Successfully"], 200);
     }
 
     /**
@@ -74,7 +74,7 @@ class ProductcoversController extends Controller
      * @param  \App\Models\productcovers  $productcovers
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, productcovers $productcovers,$id)
+    public function update(Request $request, productcovers $productcovers, $id)
     {
         //
     }
@@ -85,8 +85,10 @@ class ProductcoversController extends Controller
      * @param  \App\Models\productcovers  $productcovers
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productcovers $productcovers)
+    public function destroy(productcovers $productcove, $id)
     {
         //
+        $productcove->destroy($id);
+        return success("Delete Success Fully");
     }
 }

@@ -85,8 +85,10 @@ class ProductSizeController extends Controller
      * @param  \App\Models\productSize  $productSize
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productSize $productSize)
+    public function destroy(productSize $productSize, $id)
     {
         //
+        $productSize->destroy($id);
+        return success("Deleted Successfully");
     }
 }
