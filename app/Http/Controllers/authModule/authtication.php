@@ -14,8 +14,9 @@ class authtication extends Controller
 {
     //
 
-    public function adminEmailVerifications($token) {
-        $users = adminuser::where('accesstoken',$token)->first();
+    public function adminEmailVerifications($token)
+    {
+        $users = adminuser::where('accesstoken', $token)->first();
 
         if (!$users) {
             # code...
@@ -23,13 +24,14 @@ class authtication extends Controller
         }
 
         $users->update([
-            "email_veryfi"=>true
+            "email_veryfi" => true
         ]);
 
-        return redirect("http://localhost:3000/");
+        return redirect("https://admin.photokrafft.com/");
     }
-    public function customerEmailVerifications($token) {
-        $users = customer::where('access_token',$token)->first();
+    public function customerEmailVerifications($token)
+    {
+        $users = customer::where('access_token', $token)->first();
 
         if (!$users) {
             # code...
@@ -37,10 +39,10 @@ class authtication extends Controller
         }
 
         $users->update([
-            "email_veryfi"=>true
+            "email_veryfi" => true
         ]);
 
-        return redirect("http://localhost:3000/");
+        return redirect("https://photokrafft.com/Login");
     }
 
     public function session(Request $req)
@@ -111,23 +113,23 @@ class authtication extends Controller
             # code...
             return response(["msg" => "Users Not Found", "code" => 404], 200);
         }
-        
-        
+
+
         if (!Hash::check($req->password, $users->password)) {
             # code...
             return response(["msg" => "Wrong Password", "code" => 404], 200);
         }
-        
+
         if ($users->approved == 0) {
             # code...
             return response(["msg" => "Your account is under verification for approvals", "code" => 404], 200);
         }
-        
+
         if ($users->status == 0) {
             # code...
             return response(["msg" => "Your Account is not Active", "code" => 404], 200);
         }
-        
+
         if (!$users->email_veryfi) {
             # code...
             return response(["msg" => "Pls Veryfi Your Email Id", "code" => 404], 200);
