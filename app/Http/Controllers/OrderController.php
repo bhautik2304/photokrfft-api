@@ -125,12 +125,12 @@ class OrderController extends Controller
         $msg = "New order received from " . $orderData->user->name . " Order Number : " . $number . " & Amount " . $orderData->zone->currency_sign . " " . $order->order_total . "!";
 
         // Mail::to()->send(new newOrderReceived());
-        
+
         $Notification = new NotificationService;
         $Notification->createNotification($msg, config('notificationstatus.orders'));
-        
+
         // Mail::
-        
+
         return response([
             'order' => $order,
             'order_id' => $order->order_no,
@@ -138,7 +138,7 @@ class OrderController extends Controller
         ]);
     }
 
-    public function upload(Request $req,order $order)
+    public function upload(Request $req, order $order)
     {
         $orderId = $order->where('order_no', $req->orderNo)->first()->id;
         $orderdata = new orderdata;
@@ -206,7 +206,7 @@ class OrderController extends Controller
         ]);
         // dd($order->costomer->email);
 
-        // Mail::to($order->costomer->email)->send(new newOrderUpdate());
+        // Mail::to($order->costomer->email)->send(new newOrderUpdate($order));
 
         return success('Order status updated successfully');
     }
@@ -214,12 +214,12 @@ class OrderController extends Controller
     {
         $order = order::find($id);
         $order->update([
-            "delivery_partner_link" => $request->delivery_partner_link,
-            "delivery_tracking_no" => $request->delivery_tracking_no
+            "delivery_partner_link" => $request->parnerlink,
+            "delivery_tracking_no" => $request->deliverycode
         ]);
         // dd($order->costomer->email);
 
-        // Mail::to($order->costomer->email)->send(new newOrderUpdate());
+        // Mail::to($order->costomer->email)->send(new newOrderUpdate($order));
 
         return success('Delivery Partner Detaild Store successfully');
     }

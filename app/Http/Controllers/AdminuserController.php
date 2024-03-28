@@ -76,7 +76,7 @@ class AdminuserController extends Controller
             return unValidate($errorMessage);
         }
 
-        $token=Str::random(32);
+        $token = Str::random(32);
 
         $admin = new adminuser;
         $admin->name = $req->name;
@@ -86,9 +86,10 @@ class AdminuserController extends Controller
         $admin->password = Hash::make($req->password);
         $admin->role = $req->role;
         $admin->accesstoken = $token;
+        $admin->email_veryfi = true;
         $admin->save();
 
-        Mail::to($admin->email)->send(new emailverify(route("emailveryfy",$token)));
+        Mail::to($admin->email)->send(new emailverify(route("emailveryfy", $token)));
 
         return created("Created Successfully");
     }
