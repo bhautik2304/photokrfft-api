@@ -89,7 +89,12 @@ class AdminuserController extends Controller
         $admin->email_veryfi = true;
         $admin->save();
 
-        Mail::to($admin->email)->send(new emailverify(route("emailveryfy", $token)));
+        try {
+            //code...
+            Mail::to($admin->email)->send(new emailverify(route("emailveryfy", $token)));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return created("Created Successfully");
     }
@@ -125,7 +130,7 @@ class AdminuserController extends Controller
      */
     public function update(Request $req, adminuser $adminusers, $id)
     {
-        // return $req;
+        // return $req->role;
         $adminusers->find($id)->update([
             "name" => $req->name,
             "phone_no" => $req->phone_no,
@@ -151,7 +156,7 @@ class AdminuserController extends Controller
     public function destroy(adminuser $adminuser, $id)
     {
         //
-        $adminuser->destroy($id);
+        $adminuser->delete($id);
         return success("Deleted User Successfully");
     }
 }

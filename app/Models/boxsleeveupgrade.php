@@ -3,18 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\{Model, Builder};
+use Illuminate\Database\Eloquent\{Model, Builder, SoftDeletes};
 
 class boxsleeveupgrade extends Model
 {
 
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         "name",
         "img",
     ];
 
-    use HasFactory;
     protected static function booted(): void
     {
         static::addGlobalScope('boxandsleeveUpgradeScop', function (Builder $builder) {

@@ -23,7 +23,7 @@ class newOrderUpdate extends Mailable
     public function __construct($order)
     {
         //
-        $this->$order= $order;
+        $this->order = $order;
     }
 
     /**
@@ -33,7 +33,7 @@ class newOrderUpdate extends Mailable
      */
     public function envelope()
     {
-    // dd($order);
+        // dd($this->$order);
         // $id = $this->order->order_no;
         return new Envelope(
             subject: "Order update for order ",

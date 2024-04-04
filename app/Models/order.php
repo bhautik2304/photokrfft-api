@@ -14,6 +14,7 @@ class order extends Model
         'order_date',
         'status',
         'order_status',
+        'payment_status',
         'user_id',
         'product_id',
         'product_orientation_id',
@@ -57,47 +58,47 @@ class order extends Model
 
     public function product()
     {
-        return $this->hasOne(product::class, 'id', 'product_id')->withoutGlobalScope('orientationScope');
+        return $this->hasOne(product::class, 'id', 'product_id')->withoutGlobalScope('orientationScope')->withTrashed();
     }
 
     public function productorientation()
     {
-        return $this->hasOne(productorientation::class, 'id', 'product_orientation_id')->withoutGlobalScope('orientationScope');
+        return $this->hasOne(orientation::class, 'id', 'orientation_id')->withoutGlobalScope('orientationScope');
     }
 
     public function productsize()
     {
-        return $this->hasOne(productSize::class, 'id', 'product_size_id')->withoutGlobalScope('sizeScope');
+        return $this->hasOne(Size::class, 'id', 'size_id')->withoutGlobalScope('sizeScope')->withTrashed();
     }
 
     public function productsheet()
     {
-        return $this->hasOne(productsheet::class, 'id', 'product_sheet_id');
+        return $this->hasOne(sheet::class, 'id', 'sheet_id')->withTrashed();
     }
 
     public function productpaper()
     {
-        return $this->hasOne(productpaper::class, 'id', 'productpapers_id');
+        return $this->hasOne(paper::class, 'id', 'papers_id')->withTrashed();
     }
 
     public function productcover()
     {
-        return $this->hasOne(productcovers::class, 'id', 'productcovers_id')->withoutGlobalScope('sheetscop');
+        return $this->hasOne(covers::class, 'id', 'covers_id')->withoutGlobalScope('sheetscop')->withTrashed();
     }
 
     public function coversupgrade()
     {
-        return $this->hasOne(coversupgrades::class, 'id', 'coversupgrades_id')->withoutGlobalScope('ancient');
+        return $this->hasOne(coversupgrades::class, 'id', 'coversupgrades_id')->withoutGlobalScope('ancient')->withTrashed();
     }
 
     public function coversupgradecolor()
     {
-        return $this->hasOne(coversupgradecolor::class, 'id', 'coverupgradecolors_id');
+        return $this->hasOne(color::class, 'id', 'coverupgradecolors_id')->withTrashed();
     }
 
     public function productboxsleeve()
     {
-        return $this->hasOne(productboxsleeve::class, 'id', 'boxsleeve_id');
+        return $this->hasOne(boxsleeve::class, 'id', 'boxsleeve_id')->withTrashed();
     }
     public function productboxsleeveUpgrade()
     {
@@ -105,12 +106,12 @@ class order extends Model
     }
     public function productboxsleeveUpgradeColor()
     {
-        return $this->hasOne(boxsleevecolor::class, 'id', 'boxsleevecolors_id');
+        return $this->hasOne(color::class, 'id', 'boxsleevecolors_id')->withTrashed();
     }
 
     public function countryzone()
     {
-        return $this->hasOne(countryzone::class, 'id', 'zone_id');
+        return $this->hasOne(countryzone::class, 'id', 'zone_id')->withTrashed();
     }
 
     public function orderDetaild()

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\customer;
+namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,19 +9,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class customerUpdate extends Mailable
+class customerwlcome extends Mailable
 {
     use Queueable, SerializesModels;
-    public $userName;
+    public $name;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($userName)
+    public function __construct($name)
     {
         //
-        $this->userName = $userName;
+        $this->name = $name;
     }
 
     /**
@@ -31,8 +31,9 @@ class customerUpdate extends Mailable
      */
     public function envelope()
     {
+        $names = $this->name;
         return new Envelope(
-            subject: 'Customer Update',
+            subject: "Wlecome $names",
         );
     }
 
@@ -44,7 +45,7 @@ class customerUpdate extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'mail.customer.customer-update',
+            markdown: 'mail.customerwlcome',
         );
     }
 

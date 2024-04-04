@@ -18,12 +18,12 @@ Your order has been successfully placed <br/>
 | ------------------|:-------------:| --------------------------------:|
 | Order :           |               | {{ $order->order_no }}           |
 | Order Date :      |               | {{ date("F j, Y", $timestamp) }} |
-| Subtotal :        |               | {{ $order->order_total }}        |
+| Total :           |               | {{ $order->order_total }}        |
 @endcomponent
 </x-mail::panel>
 
 
-<x-mail::button :url="'https://sascube.ltd/profile/orders'">
+<x-mail::button :url="'https://photokrafft.com/Profiles/orders'">
 Check Your Order Status
 </x-mail::button>
 
@@ -32,7 +32,7 @@ You will get production level updates about this order ones we start processing 
 Ones the order is ready to dispatch we will deliver the order to the below mentioned details.
 
 SHIPPING ADDRESS : <br>
-{{ $order->delivery_address ? $order->delivery_address : $order->costomer->address }}
+{{ $order->delivery_address !== null ? $order->delivery_address : $order->costomer->address }}
 
 Thanks & Regards,<br>
 {{ config('app.name') }}

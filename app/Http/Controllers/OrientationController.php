@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\orientation;
+use App\Models\productorientation;
 use Illuminate\Http\Request;
 
 class OrientationController extends Controller
@@ -108,7 +109,7 @@ class OrientationController extends Controller
     {
         //
         $orientations->find($id)->delete();
-        
+        productorientation::where('orientation_id', $id)->delete();
         return success('Orientation deleted');
     }
 }

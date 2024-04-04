@@ -29,6 +29,24 @@ class authtication extends Controller
 
         return redirect("https://admin.photokrafft.com/");
     }
+
+    public function customerWhatsappverifyVerifications($token)
+    {
+        $users = customer::where('access_token', $token)->first();
+
+        if (!$users) {
+            # code...
+            return "invalid access token";
+        }
+
+        $users->update([
+            "whatsapp_veryfi" => true
+        ]);
+
+        $users = customer::where('access_token', $token)->first();
+
+        return redirect("https://photokrafft.com/Login");
+    }
     public function customerEmailVerifications($token)
     {
         $users = customer::where('access_token', $token)->first();
@@ -130,9 +148,9 @@ class authtication extends Controller
             return response(["msg" => "Your Account is not Active", "code" => 404], 200);
         }
 
-        if (!$users->email_veryfi) {
+        if (!$users->whatsapp_veryfi) {
             # code...
-            return response(["msg" => "Pls Veryfi Your Email Id", "code" => 404], 200);
+            return response(["msg" => "Pls Veryfi Your Whatsapp No", "code" => 404], 200);
         }
 
         $token = Str::random(60);
@@ -155,7 +173,7 @@ class authtication extends Controller
     }
     public function tokenVerify(Request $req)
     {
-        $users = customer::where('token', $req->token)->first();
+        $users = customer::where('token', $req->header('Authorization'))->first();
 
 
         if (!$users) {
@@ -165,7 +183,7 @@ class authtication extends Controller
 
         if ($users->status == 0) {
             # code...
-            return response(["msg" => "Your Account is not Active", "code" => 404], 200);
+            return response(["msg" => "Your Account is not Active", "code" => 404, "user" => $users], 200);
         }
 
         if ($users->approved == 0) {

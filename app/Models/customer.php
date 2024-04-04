@@ -12,7 +12,7 @@ class customer extends Model
     protected static function booted(): void
     {
         static::addGlobalScope('costomerScope', function (Builder $builder) {
-            $builder->with('zone','sampleOrders');
+            $builder->with('zone', 'sampleOrders');
         });
     }
 
@@ -20,6 +20,7 @@ class customer extends Model
         'name',
         'country_code',
         'phone_no',
+        'whatsapp_no',
         'email',
         'password',
         'compunys_name',
@@ -31,6 +32,7 @@ class customer extends Model
         'country',
         'email_veryfi',
         'phone_veryfi',
+        'whatsapp_veryfi',
         'status',
         'pricing_formate',
         'approved',

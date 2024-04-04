@@ -1,7 +1,7 @@
 <x-mail::message>
 # New registration email
 
-Hi there, {{ $userName }}!
+Hi there, {{ $name }}!
 
 You are officially part of the photokrafft family!
 

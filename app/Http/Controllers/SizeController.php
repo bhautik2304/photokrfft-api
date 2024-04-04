@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\productSize;
 use App\Models\Size;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class SizeController extends Controller
     public function index()
     {
         //
-        return success("Retrived Succefully",Size::all());
+        return success("Retrived Succefully", Size::all());
     }
 
     /**
@@ -101,6 +102,7 @@ class SizeController extends Controller
     {
         //
         Size::find($id)->delete();
+        productSize::where('size_id', $id)->delete();
         return success('Deleted successfully');
     }
 }

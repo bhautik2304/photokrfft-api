@@ -1,15 +1,8 @@
 <?php
 
-use App\Events\notification;
-use App\Http\Controllers\authModule\authtication;
-use App\Mail\auth\customeremailverify;
-use App\Mail\auth\emailverify;
-use App\Mail\auth\sendResetPasswordOtp;
-use App\Mail\orders\deliveryNotification;
-use App\Models\adminuser;
-use App\Models\order;
-use App\Service\NotificationService;
+// use App\Service\Wahtsapp;
 use Illuminate\Support\Facades\{Route, Mail};
+use App\Http\Controllers\authModule\authtication;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +17,49 @@ use Illuminate\Support\Facades\{Route, Mail};
 
 Route::get('/', function () {
     // // dd($orders);
-    Mail::to("tifamtifins@gmail.com")->send(new emailverify("https://meet.google.com/"));
-    return 0;
+    // $whatsapp = new App\Service\Wahtsapp;
+
+    $phoneNumber = 916358006532;
+
+    $Welcome_message = [
+        "messaging_product" => "whatsapp",
+        "to" => $phoneNumber,
+        "type" => "template",
+        "template" => [
+            "name" => "user_verification_wa",
+            "language" => [
+                "code" => "en"
+            ],
+            "components" => [
+                [
+                    "type" => "body",
+                    "parameters" => [
+                        [
+                            "type" => "text",
+                            "text" => "https://api.photokrafft.com/customer/whatsappverify/ssfsdfgdgg"
+                        ]
+                    ]
+                ],
+                [
+                    "type" => "button",
+                    "sub_type" => "url",
+                    "index" => 0,
+                    "parameters" => [
+                        [
+                            "type" => "text",
+                            "text" => "gfdgfdgf"
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ];
+
+    // send($Welcome_message);
+
+    dd(send($Welcome_message));
 });
 
-Route::get('emailveryfy/{token}',[authtication::class,'adminEmailVerifications'])->name('emailveryfy');
-Route::get('customer/emailveryfy/{token}',[authtication::class,'customerEmailVerifications'])->name('customeremailveryfy');
+Route::get('emailveryfy/{token}', [authtication::class, 'adminEmailVerifications'])->name('emailveryfy');
+Route::get('customer/emailveryfy/{token}', [authtication::class, 'customerEmailVerifications'])->name('customeremailveryfy');
+Route::get('customer/whatsappverify/{token}', [authtication::class, 'customerWhatsappverifyVerifications']);

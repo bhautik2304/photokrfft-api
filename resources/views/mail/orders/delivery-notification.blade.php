@@ -1,5 +1,5 @@
 <x-mail::message>
-# OTP for Reset Password
+# Delivery Notification
 Dear {{$order->costomer->name}}
 
 Order Details:
@@ -8,7 +8,7 @@ Order Number: {{$order->order_no}}
 Delivery Partner Information:
 We've partnered with the best delivery partner for your product. To track your order in real-time, please click on the link:
 {{$order->delivery_partner_link}}
-    
+
 @component('mail::panel')
 Delivery Tracking Number: {{$order->delivery_tracking_no}}
 @endcomponent

@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 use App\Mail\auth\emailverify;
 use App\Service\NotificationService;
 use App\Mail\customer\customerUpdate;
-use App\Mail\customer\newCustomerRequiest;
-use Illuminate\Support\Facades\{Hash, Mail};
+use Illuminate\Support\Facades\{Hash, Log, Mail};
+use PhpParser\Node\Stmt\TryCatch;
 
 class costomerController extends Controller
 {
@@ -63,6 +63,7 @@ class costomerController extends Controller
         $customer->name = $req->name;
         $customer->country_code = $req->country_code;
         $customer->phone_no = $req->phone_no;
+        $customer->whatsapp_no = $req->whatsapp_no;
         $customer->email = $req->email;
         $customer->password = Hash::make($req->password);
 
@@ -81,6 +82,46 @@ class costomerController extends Controller
         try {
             //code...
             Mail::to($customer->email)->send(new emailverify("https://api.photokrafft.com/customer/emailveryfy/$token"));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        try {
+            //code...
+            $Welcome_message = [
+                "messaging_product" => "whatsapp",
+                "to" => $customer->whatsapp_no,
+                "type" => "template",
+                "template" => [
+                    "name" => "user_verification_wa",
+                    "language" => [
+                        "code" => "en"
+                    ],
+                    "components" => [
+                        [
+                            "type" => "body",
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => "https://api.photokrafft.com/customer/whatsappverify/$token"
+                                ]
+                            ]
+                        ],
+                        [
+                            "type" => "button",
+                            "sub_type" => "url",
+                            "index" => 0,
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => $token
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            send($Welcome_message);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -106,11 +147,51 @@ class costomerController extends Controller
             "status" => true
         ]);
 
-        $customerreq->find($id)->first();
+        $customer = $customerreq->where('id', $id)->first();
 
         try {
+            Mail::to($customer->email)->send(new customerUpdate($customer->name));
             //code...
-            Mail::to($customerreq->email)->send(new customerUpdate($customerreq->name));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        try {
+            $Welcome_message = [
+                "messaging_product" => "whatsapp",
+                "to" => $customer->whatsapp_no,
+                "type" => "template",
+                "template" => [
+                    "name" => "welcome_user",
+                    "language" => [
+                        "code" => "en"
+                    ],
+                    "components" => [
+                        [
+                            "type" => "header",
+                            "parameters" => [
+                                [
+                                    "type" => "image",
+                                    "image" => [
+                                        "link" => "https://basira.in/public/whatsappmedia.png"
+                                    ]
+                                ]
+                            ]
+                        ],
+                        [
+                            "type" => "body",
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => $customer->name
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+            $response = send($Welcome_message);
+            Log::info("sms temp", [$response]);
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -167,7 +248,7 @@ class costomerController extends Controller
     public function destroy(customer $customer, $id)
     {
         //
-        $customers = $customer->find($id)->first();
+        $customers = $customer->find($id);
         $customer->destroy($id);
 
         return success("$customers->name Deleted Successfully");
@@ -202,7 +283,7 @@ class costomerController extends Controller
             "zone" => $req->zone
         ]);
 
-        $customers = $customer->find($id)->first();
+        $customers = $customer->find($id);
 
         return success("$customers->name zone Updated Successfully");
     }
@@ -214,7 +295,7 @@ class costomerController extends Controller
             "avtar" => storeFile($req, 'avtar', '/customer/avtar/')
         ]);
 
-        $customers = $customer->find($id)->first();
+        $customers = $customer->find($id);
 
         return success("$customers->name Avtar Updated Successfully");
     }
@@ -226,7 +307,7 @@ class costomerController extends Controller
             "discount" => $req->discounts
         ]);
 
-        $customers = $customer->find($id)->first();
+        $customers = $customer->find($id);
 
         return success("$customers->name Discount Updated Successfully");
     }
@@ -237,9 +318,20 @@ class costomerController extends Controller
             "email_veryfi" => $req->status
         ]);
 
-        $customers = $customer->find($id)->first();
+        $customers = $customer->find($id);
 
         return success("$customers->name Email Veryfi Successfully");
+    }
+    public function whatsappverify(Request $req, customer $customer, $id)
+    {
+        //
+        $customer->where('id', $id)->update([
+            "whatsapp_veryfi" => $req->status
+        ]);
+
+        $customers = $customer->find($id);
+
+        return success("$customers->name Whatsapp Veryfi Updated");
     }
 }
 

@@ -15,7 +15,7 @@ class CoversController extends Controller
     public function index()
     {
         //
-        return success('Retrieved successfully',covers::all());
+        return success('Retrieved successfully', covers::all());
     }
 
     /**
@@ -101,7 +101,6 @@ class CoversController extends Controller
     {
         //
         $covers->find($id)->delete();
-
         return success('Deleted successfully');
     }
 }

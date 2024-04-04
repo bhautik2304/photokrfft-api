@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string("name");
             $table->unsignedBigInteger("country_code");
             $table->unsignedBigInteger("phone_no");
+            $table->unsignedBigInteger("whatsapp_no")->nullable();
             $table->text("email");
             $table->text("password");
             $table->text("address")->nullable();
@@ -31,6 +32,7 @@ return new class extends Migration
 
             $table->text("avtar")->nullable();
             $table->boolean("email_veryfi")->default(false);
+            $table->boolean("whatsapp_veryfi")->default(false);
             $table->boolean("phone_veryfi")->default(false);
             $table->boolean("status")->default(false);
             $table->boolean("approved")->default(false);
@@ -38,6 +40,7 @@ return new class extends Migration
             $table->unsignedBigInteger("discount")->default(0);
             $table->text('token')->nullable();
             $table->text('access_token')->nullable();
+            $table->unsignedBigInteger("otp")->nullable();
             $table->timestamps();
         });
     }

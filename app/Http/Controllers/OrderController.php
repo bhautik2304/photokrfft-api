@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-// set_time_limit(0);
-
 use App\Events\neworder;
+use App\Mail\orders\deliveryNotification;
 use App\Mail\orders\newOrderReceived;
 use App\Mail\orders\newOrderUpdate;
+use App\Mail\orders\orderConfirmmation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\{order, ordercustomdetail, orderdata, sampleorderpermissionstatus};
 use App\Service\NotificationService;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -61,16 +62,17 @@ class OrderController extends Controller
         $order->product_id = $orderData->product_id;
         $order->pritnig_price_type = $orderData->pritnig_price_type;
         $order->pritnig_price = $orderData->pritnig_price_value;
-        $order->product_orientation_id = $orderData->productOrientation;
-        $order->product_size_id = $orderData->productSize;
-        $order->product_sheet_id = $orderData->productSheet;
-        $order->productpapers_id = $orderData->paperType;
+
+        $order->orientation_id = $orderData->productOrientation;
+        $order->size_id = $orderData->productSize;
+        $order->sheet_id = $orderData->productSheet;
+        $order->papers_id = $orderData->paperType;
         $order->page_qty = $orderData->page_qty;
         $order->zone_id = $orderData->zone->id;
         $order->productValue = $orderData->orderTotale;
         $order->shippingValue = $orderData->zone->shipingcharge;
 
-        $order->productcovers_id = $orderData->productcover;
+        $order->covers_id = $orderData->productcover;
         $order->cover_type = $orderData->coverType;
         $order->coversupgrades_id = $orderData->productcoveroption;
         $order->coverupgradecolors_id = $orderData->productcovercolor;
@@ -124,10 +126,74 @@ class OrderController extends Controller
 
         $msg = "New order received from " . $orderData->user->name . " Order Number : " . $number . " & Amount " . $orderData->zone->currency_sign . " " . $order->order_total . "!";
 
-        // Mail::to()->send(new newOrderReceived());
+        // Mail::to("parth@photokrafft.com")->send(new orderConfirmmation($order));
+        // Mail::to($order->costomer->email)->send(new orderConfirmmation($order));
 
         $Notification = new NotificationService;
         $Notification->createNotification($msg, config('notificationstatus.orders'));
+
+        $address = "";
+        if ($orderData->delivery_address) {
+            # code...
+            $address = $orderData->delivery_address;
+            // $adress = $orderData->delivery_address;
+        } else {
+            $address = $orderData->user->address;
+            # code...
+        }
+
+        $total = $order->order_total . " " . $orderData->zone->currency_sign;
+        $timestamp = strtotime($order->order_date);
+        Log::info("total", ["date" => date("m/d/Y", $timestamp), "total" => $total]);
+        $order_confirm = [
+            "messaging_product" => "whatsapp",
+            "to" => $orderData->user->whatsapp_no,
+            "type" => "template",
+            "template" => [
+                "name" => "new_order",
+                "language" => [
+                    "code" => "en"
+                ],
+                "components" => [
+                    [
+                        "type" => "header",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => "ORD-$number"
+                            ]
+                        ]
+                    ],
+                    [
+                        "type" => "body",
+                        "parameters" => [
+                            [
+                                "type" => "text",
+                                "text" => $orderData->user->name
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => "ORD-$number"
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => date("m/d/Y", $timestamp)
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => $total,
+                            ],
+                            [
+                                "type" => "text",
+                                "text" => "Login To your Account to check shiping detail : https://photokrafft.com/Profiles/orders"
+                            ],
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        send($order_confirm);
 
         // Mail::
 
@@ -200,39 +266,150 @@ class OrderController extends Controller
 
     public function statusUpdate(Request $request, $id)
     {
-        $order = order::find($id);
-        $order->update([
+        // dd($order->toArray());
+
+        order::find($id)->update([
             "order_status" => $request->status
         ]);
-        // dd($order->costomer->email);
 
-        // Mail::to($order->costomer->email)->send(new newOrderUpdate($order));
+        $order = order::find($id);
 
+        try {
+            //code...
+            Mail::to($order->costomer->email)->send(new newOrderUpdate($order));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        try {
+            //code...
+            $total = $order->order_total . " " . $order->countryzone->currency_sign;
+            $timestamp = strtotime($order->order_date);
+            $order_confirm = [
+                "messaging_product" => "whatsapp",
+                "to" => $order->costomer->whatsapp_no,
+                "type" => "template",
+                "template" => [
+                    "name" => "orders_update",
+                    "language" => [
+                        "code" => "en"
+                    ],
+                    "components" => [
+                        [
+                            "type" => "body",
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => $order->costomer->name
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => $order->order_status
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => "ORD-$order->order_no"
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => $total
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" =>  date("m/d/Y", $timestamp),
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => "Login To your Account to check shiping detail : https://photokrafft.com/Profiles/orders",
+                                ],
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            send($order_confirm);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return success('Order status updated successfully');
     }
     public function deliveryPartnerUpdate(Request $request, $id)
     {
-        $order = order::find($id);
-        $order->update([
+        order::find($id)->update([
             "delivery_partner_link" => $request->parnerlink,
             "delivery_tracking_no" => $request->deliverycode
         ]);
-        // dd($order->costomer->email);
+        $order = order::find($id);
+        // dd($order->delivery_tracking_no);
 
-        // Mail::to($order->costomer->email)->send(new newOrderUpdate($order));
+        try {
+            //code...
+            $order_confirm = [
+                "messaging_product" => "whatsapp",
+                "to" => $order->costomer->whatsapp_no,
+                "type" => "template",
+                "template" => [
+                    "name" => "order_notification",
+                    "language" => [
+                        "code" => "en"
+                    ],
+                    "components" => [
+                        [
+                            "type" => "body",
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => $order->costomer->name
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => "ORD-$order->order_no"
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => $order->delivery_partner_link
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" =>  $order->delivery_tracking_no,
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            send($order_confirm);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        try {
+            //code...
+            Mail::to($order->costomer->email)->send(new deliveryNotification($order));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
 
         return success('Delivery Partner Detaild Store successfully');
     }
 
     public function PaymentstatusUpdate(Request $request, $id)
     {
-        $order = order::find($id);
 
-        $order->update([
+        order::find($id)->update([
             "payment_status" => $request->status
         ]);
+        $order = order::find($id);
 
-        // Mail::to($order->costomer->email)->send(new newOrderUpdate());
+        try {
+            //code...
+            Mail::to($order->costomer->email)->send(new newOrderUpdate($order));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return success('Order payment status updated successfully');
     }
@@ -256,5 +433,16 @@ class OrderController extends Controller
                 "code" => 200
             ], 200);
         }
+    }
+
+    public function addDiscount(Request $request, $id)
+    {
+        // $discount = $request->discount;
+        order::find($id)->update([
+            "discount" => $request->discount,
+            "order_total" => $request->orderValue
+        ]);
+
+        return success("discount Added Successfully");
     }
 }

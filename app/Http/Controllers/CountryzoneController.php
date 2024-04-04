@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\countryzone;
+use App\Models\customer;
 use Illuminate\Http\Request;
 
 class CountryzoneController extends Controller
@@ -106,6 +107,11 @@ class CountryzoneController extends Controller
     {
         //
         countryzone::find($id)->delete();
+
+        customer::where('zone', $id)->update([
+            'status' => true,
+            'zone' => null
+        ]);
 
         return success('Deleted successfully');
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\color;
+use App\Models\productcovers;
 use Illuminate\Http\Request;
 
 class ColorController extends Controller
@@ -79,7 +80,7 @@ class ColorController extends Controller
     {
         //
         color::find($id)->update([
-            "color"=>$request->color
+            "color" => $request->color
         ]);
 
         if ($request->hasFile('color_img')) {
