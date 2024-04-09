@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\covers;
+use App\Models\coversupgrades;
+use App\Models\productcovers;
 use Illuminate\Http\Request;
 
 class CoversController extends Controller
@@ -101,6 +103,19 @@ class CoversController extends Controller
     {
         //
         $covers->find($id)->delete();
+        try {
+            //code...
+            coversupgrades::where('cover_id', $id)->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+        try {
+            //code...
+            productcovers::where('cover_id', $id)->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return success('Deleted successfully');
     }
 }

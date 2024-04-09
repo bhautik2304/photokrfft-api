@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('event_name');
             $table->date('event_date');
             $table->string('customizeMessage');
+            $table->string('fonts');
             $table->enum('Imprinting', ['Laser Imprinting', 'Foil Imprinting'])->nullable();
             $table->timestamps();
         });

@@ -5,7 +5,7 @@ use App\Models\productSize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authModule\authtication;
-use App\Http\Controllers\{AdminuserController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, NotificationController, OrientationController, PaperController, PrintingpriceController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SampleOrderPermissionStatusController, SheetController, SizeController, StudioController};
+use App\Http\Controllers\{AdminuserController, CoversupgradescolorController, BoxsleevecolorController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, NotificationController, OrientationController, PaperController, PrintingpriceController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SampleOrderPermissionStatusController, SheetController, SizeController, StudioController};
 use App\Http\Middleware\custommiddleware;
 use App\Models\costomer;
 use App\Models\customer;
@@ -68,6 +68,7 @@ Route::middleware(custommiddleware::class)->group(function () {
 
 
     Route::apiResource('product', ProductController::class);
+    Route::post('product/update-image/{id}', [ProductController::class, 'updateImg']);
     Route::apiResource('product/productalbumcopyprice', ProductAlbumCopyPriceController::class);
     Route::apiResource('product/printigprice', PrintingpriceController::class);
     Route::apiResource('countryzone', CountryzoneController::class);
@@ -76,10 +77,12 @@ Route::middleware(custommiddleware::class)->group(function () {
     Route::apiResource('paper', PaperController::class);
     Route::apiResource('sheet', SheetController::class);
     Route::apiResource('covers', CoversController::class);
-    Route::apiResource('coversupgrades', CoversupgradesController::class);
     Route::apiResource('colors', ColorController::class);
     Route::apiResource('boxsleeve', BoxsleeveController::class);
+    Route::apiResource('coversupgrades', CoversupgradesController::class);
     Route::apiResource('boxsleeveupgrades', BoxsleeveupgradeController::class);
+    Route::apiResource('coversupgrades/color', CoversupgradescolorController::class);
+    Route::apiResource('boxsleeveupgrades/color', BoxsleevecolorController::class);
 
     // resource update routes
     Route::post('product/update/{id}', [ProductController::class, 'update']);

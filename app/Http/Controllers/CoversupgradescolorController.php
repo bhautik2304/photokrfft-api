@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\boxsleevecolor;
-use App\Models\color;
 use App\Models\coversupgradecolor;
-use App\Models\productcovers;
 use Illuminate\Http\Request;
 
-class ColorController extends Controller
+class CoversupgradescolorController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,8 +15,6 @@ class ColorController extends Controller
     public function index()
     {
         //
-
-        return success("Retrived All Colors", color::all());
     }
 
     /**
@@ -41,21 +36,26 @@ class ColorController extends Controller
     public function store(Request $request)
     {
         //
-        $color = new color();
-        $color->color = $request->color;
-        $color->img = storeFile($request, 'color_img', '/img/colors/');
-        $color->save();
-
-        return created("Color save successfully");
+        if ($request->colorData) {
+            foreach ($request->colorData as $color) {
+                $boxslevecolor = new coversupgradecolor();
+                $boxslevecolor->coversupgrade_id = $color['optionid'];
+                $boxslevecolor->color_id = $color['id'];
+                $boxslevecolor->save();
+            }
+            return created("Color Added Successfully");
+        } else {
+            return success("No data Found");
+        }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\color  $color
+     * @param  \App\Models\coversupgradecolor  $coversupgradecolor
      * @return \Illuminate\Http\Response
      */
-    public function show(color $color)
+    public function show(coversupgradecolor $coversupgradecolor)
     {
         //
     }
@@ -63,10 +63,10 @@ class ColorController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\color  $color
+     * @param  \App\Models\coversupgradecolor  $coversupgradecolor
      * @return \Illuminate\Http\Response
      */
-    public function edit(color $color)
+    public function edit(coversupgradecolor $coversupgradecolor)
     {
         //
     }
@@ -75,36 +75,25 @@ class ColorController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\color  $color
+     * @param  \App\Models\coversupgradecolor  $coversupgradecolor
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, coversupgradecolor $coversupgradecolor)
     {
         //
-        color::find($id)->update([
-            "color" => $request->color
-        ]);
-
-        if ($request->hasFile('color_img')) {
-            color::find($id)->update([
-                'img' => storeFile($request, 'color_img', '/img/colors/')
-            ]);
-        }
-        return success("Updated Successfully");
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\color  $color
+     * @param  \App\Models\coversupgradecolor  $coversupgradecolor
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(coversupgradecolor $coversupgradecolor, $id)
     {
         //
-        color::destroy($id);
-        coversupgradecolor::where("color_id", $id)->delete();
-        boxsleevecolor::where("color_id", $id)->delete();
+        $coversupgradecolor->find($id)->delete();
+
         return success("Deleted Successfully");
     }
 }

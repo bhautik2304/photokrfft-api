@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\boxsleeve;
+use App\Models\boxsleeveupgrade;
+use App\Models\productboxsleeve;
 use Illuminate\Http\Request;
 
 class BoxsleeveController extends Controller
@@ -102,7 +104,19 @@ class BoxsleeveController extends Controller
     {
         //
         boxsleeve::find($id)->delete();
+        try {
+            //code...
+            boxsleeveupgrade::where('boxsleeve_id', $id)->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
+        try {
+            //code...
+            productboxsleeve::where('boxsleeve_id', $id)->delete();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return success('Deleted successfully');
     }
 }

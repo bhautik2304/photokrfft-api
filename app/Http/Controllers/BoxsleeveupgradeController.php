@@ -17,7 +17,7 @@ class BoxsleeveupgradeController extends Controller
     {
         //
 
-        return success("Retrived All",boxsleeveupgrade::all());
+        return success("Retrived All", boxsleeveupgrade::all());
     }
 
     /**
@@ -88,7 +88,7 @@ class BoxsleeveupgradeController extends Controller
      * @param  \App\Models\boxsleeveupgrade  $boxsleeveupgrade
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         //
 
@@ -104,7 +104,6 @@ class BoxsleeveupgradeController extends Controller
 
         // $coversupgrades->save();
         return success('Updated successfully');
-
     }
 
     /**

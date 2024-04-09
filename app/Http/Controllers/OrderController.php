@@ -113,6 +113,7 @@ class OrderController extends Controller
         $ordercustomdetail->event_date = $orderData->orderDetaild->eventDate;
         $ordercustomdetail->customizeMessage = $orderData->orderDetaild->costumizeMessage;
         $ordercustomdetail->Imprinting = $orderData->orderDetaild->printing;
+        $ordercustomdetail->fonts = $orderData->orderDetaild->fontType;
         $ordercustomdetail->save();
 
         if ($order->is_sample) {
@@ -126,75 +127,86 @@ class OrderController extends Controller
 
         $msg = "New order received from " . $orderData->user->name . " Order Number : " . $number . " & Amount " . $orderData->zone->currency_sign . " " . $order->order_total . "!";
 
-        // Mail::to("parth@photokrafft.com")->send(new orderConfirmmation($order));
-        // Mail::to($order->costomer->email)->send(new orderConfirmmation($order));
-
-        $Notification = new NotificationService;
-        $Notification->createNotification($msg, config('notificationstatus.orders'));
-
-        $address = "";
-        if ($orderData->delivery_address) {
-            # code...
-            $address = $orderData->delivery_address;
-            // $adress = $orderData->delivery_address;
-        } else {
-            $address = $orderData->user->address;
-            # code...
+        try {
+            //code...
+            Mail::to("parth@photokrafft.com")->send(new orderConfirmmation($order));
+            Mail::to($order->costomer->email)->send(new orderConfirmmation($order));
+        } catch (\Throwable $th) {
+            //throw $th;
         }
+        try {
+            //code...
+            $Notification = new NotificationService;
+            $Notification->createNotification($msg, config('notificationstatus.orders'));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        try {
+            //code...
+            $address = "";
+            if ($orderData->delivery_address) {
+                # code...
+                $address = $orderData->delivery_address;
+                // $adress = $orderData->delivery_address;
+            } else {
+                $address = $orderData->user->address;
+                # code...
+            }
 
-        $total = $order->order_total . " " . $orderData->zone->currency_sign;
-        $timestamp = strtotime($order->order_date);
-        Log::info("total", ["date" => date("m/d/Y", $timestamp), "total" => $total]);
-        $order_confirm = [
-            "messaging_product" => "whatsapp",
-            "to" => $orderData->user->whatsapp_no,
-            "type" => "template",
-            "template" => [
-                "name" => "new_order",
-                "language" => [
-                    "code" => "en"
-                ],
-                "components" => [
-                    [
-                        "type" => "header",
-                        "parameters" => [
-                            [
-                                "type" => "text",
-                                "text" => "ORD-$number"
-                            ]
-                        ]
+            $total = $order->order_total . " " . $orderData->zone->currency_sign;
+            $timestamp = strtotime($order->order_date);
+            Log::info("total", ["date" => date("m/d/Y", $timestamp), "total" => $total]);
+            $order_confirm = [
+                "messaging_product" => "whatsapp",
+                "to" => $orderData->user->whatsapp_no,
+                "type" => "template",
+                "template" => [
+                    "name" => "new_order",
+                    "language" => [
+                        "code" => "en"
                     ],
-                    [
-                        "type" => "body",
-                        "parameters" => [
-                            [
-                                "type" => "text",
-                                "text" => $orderData->user->name
-                            ],
-                            [
-                                "type" => "text",
-                                "text" => "ORD-$number"
-                            ],
-                            [
-                                "type" => "text",
-                                "text" => date("m/d/Y", $timestamp)
-                            ],
-                            [
-                                "type" => "text",
-                                "text" => $total,
-                            ],
-                            [
-                                "type" => "text",
-                                "text" => "Login To your Account to check shiping detail : https://photokrafft.com/Profiles/orders"
-                            ],
+                    "components" => [
+                        [
+                            "type" => "header",
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => "ORD-$number"
+                                ]
+                            ]
+                        ],
+                        [
+                            "type" => "body",
+                            "parameters" => [
+                                [
+                                    "type" => "text",
+                                    "text" => $orderData->user->name
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => "ORD-$number"
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => date("m/d/Y", $timestamp)
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => $total,
+                                ],
+                                [
+                                    "type" => "text",
+                                    "text" => "Login To your Account to check shiping detail : https://photokrafft.com/Profiles/orders"
+                                ],
+                            ]
                         ]
                     ]
                 ]
-            ]
-        ];
-
-        send($order_confirm);
-
+            ];
+            send($order_confirm);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         // Mail::
 
         return response([

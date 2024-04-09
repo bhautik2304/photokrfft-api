@@ -15,9 +15,9 @@ class boxsleevecolor extends Model
         });
     }
 
-    
+
     public function colors()
     {
-        return $this->hasMany(color::class, 'id', 'color_id');
+        return $this->belongsTo(color::class, 'color_id');
     }
 }

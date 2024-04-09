@@ -36,6 +36,17 @@ class BoxsleevecolorController extends Controller
     public function store(Request $request)
     {
         //
+        if ($request->colorData) {
+            foreach ($request->colorData as $color) {
+                $boxslevecolor = new Boxsleevecolor();
+                $boxslevecolor->boxsleeveupgrade_id = $color['optionid'];
+                $boxslevecolor->color_id = $color['id'];
+                $boxslevecolor->save();
+            }
+            return created("Color Added Successfully");
+        } else {
+            return success("No data Found");
+        }
     }
 
     /**
@@ -78,8 +89,11 @@ class BoxsleevecolorController extends Controller
      * @param  \App\Models\boxsleevecolor  $boxsleevecolor
      * @return \Illuminate\Http\Response
      */
-    public function destroy(boxsleevecolor $boxsleevecolor)
+    public function destroy(boxsleevecolor $boxsleevecolor, $id)
     {
         //
+        $boxsleevecolor->find($id)->delete();
+
+        return success("Box & Sleeve Color Deleted");
     }
 }

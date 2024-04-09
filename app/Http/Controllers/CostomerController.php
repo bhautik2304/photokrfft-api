@@ -85,46 +85,46 @@ class costomerController extends Controller
         } catch (\Throwable $th) {
             //throw $th;
         }
-        try {
-            //code...
-            $Welcome_message = [
-                "messaging_product" => "whatsapp",
-                "to" => $customer->whatsapp_no,
-                "type" => "template",
-                "template" => [
-                    "name" => "user_verification_wa",
-                    "language" => [
-                        "code" => "en"
-                    ],
-                    "components" => [
-                        [
-                            "type" => "body",
-                            "parameters" => [
-                                [
-                                    "type" => "text",
-                                    "text" => "https://api.photokrafft.com/customer/whatsappverify/$token"
-                                ]
-                            ]
-                        ],
-                        [
-                            "type" => "button",
-                            "sub_type" => "url",
-                            "index" => 0,
-                            "parameters" => [
-                                [
-                                    "type" => "text",
-                                    "text" => $token
-                                ]
-                            ]
-                        ]
-                    ]
-                ]
-            ];
+        // try {
+        //     //code...
+        //     $Welcome_message = [
+        //         "messaging_product" => "whatsapp",
+        //         "to" => $customer->whatsapp_no,
+        //         "type" => "template",
+        //         "template" => [
+        //             "name" => "user_verification_wa",
+        //             "language" => [
+        //                 "code" => "en"
+        //             ],
+        //             "components" => [
+        //                 [
+        //                     "type" => "body",
+        //                     "parameters" => [
+        //                         [
+        //                             "type" => "text",
+        //                             "text" => "https://api.photokrafft.com/customer/whatsappverify/$token"
+        //                         ]
+        //                     ]
+        //                 ],
+        //                 [
+        //                     "type" => "button",
+        //                     "sub_type" => "url",
+        //                     "index" => 0,
+        //                     "parameters" => [
+        //                         [
+        //                             "type" => "text",
+        //                             "text" => $token
+        //                         ]
+        //                     ]
+        //                 ]
+        //             ]
+        //         ]
+        //     ];
 
-            send($Welcome_message);
-        } catch (\Throwable $th) {
-            //throw $th;
-        }
+        //     send($Welcome_message);
+        // } catch (\Throwable $th) {
+        //     //throw $th;
+        // }
         // Mail::to()->send(new newCustomerRequiest());
 
         $Notification = new NotificationService;

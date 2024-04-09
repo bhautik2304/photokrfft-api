@@ -1,7 +1,9 @@
 <?php
 
 // use App\Service\Wahtsapp;
-use Illuminate\Support\Facades\{Route, Mail};
+use Illuminate\Support\Facades\Log;
+use App\Mail\orders\newOrderReceived;
+use Illuminate\Support\Facades\{Route};
 use App\Http\Controllers\authModule\authtication;
 
 /*
@@ -16,48 +18,46 @@ use App\Http\Controllers\authModule\authtication;
 */
 
 Route::get('/', function () {
-    // // dd($orders);
-    // $whatsapp = new App\Service\Wahtsapp;
+    // $phoneNumber = 916358006532;
 
-    $phoneNumber = 916358006532;
+    // $Welcome_message = [
+    //     "messaging_product" => "whatsapp",
+    //     "to" => $phoneNumber,
+    //     "type" => "template",
+    //     "template" => [
+    //         "name" => "user_verification_wa",
+    //         "language" => [
+    //             "code" => "en"
+    //         ],
+    //         "components" => [
+    //             [
+    //                 "type" => "body",
+    //                 "parameters" => [
+    //                     [
+    //                         "type" => "text",
+    //                         "text" => "https://api.photokrafft.com/customer/whatsappverify/ssfsdfgdgg"
+    //                     ]
+    //                 ]
+    //             ],
+    //             [
+    //                 "type" => "button",
+    //                 "sub_type" => "url",
+    //                 "index" => 0,
+    //                 "parameters" => [
+    //                     [
+    //                         "type" => "text",
+    //                         "text" => "gfdgfdgf"
+    //                     ]
+    //                 ]
+    //             ]
+    //         ]
+    //     ]
+    // ];
 
-    $Welcome_message = [
-        "messaging_product" => "whatsapp",
-        "to" => $phoneNumber,
-        "type" => "template",
-        "template" => [
-            "name" => "user_verification_wa",
-            "language" => [
-                "code" => "en"
-            ],
-            "components" => [
-                [
-                    "type" => "body",
-                    "parameters" => [
-                        [
-                            "type" => "text",
-                            "text" => "https://api.photokrafft.com/customer/whatsappverify/ssfsdfgdgg"
-                        ]
-                    ]
-                ],
-                [
-                    "type" => "button",
-                    "sub_type" => "url",
-                    "index" => 0,
-                    "parameters" => [
-                        [
-                            "type" => "text",
-                            "text" => "gfdgfdgf"
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    ];
+    // // send($Welcome_message);
 
-    // send($Welcome_message);
-
-    dd(send($Welcome_message));
+    // dd(send($Welcome_message));
+    return response()->redirectTo("https://photokrafft.com");
 });
 
 Route::get('emailveryfy/{token}', [authtication::class, 'adminEmailVerifications'])->name('emailveryfy');
