@@ -20,6 +20,7 @@ class coversupgrades extends Model
         'name',
         'cover_id',
         'img',
+        'status',
     ];
 
     public function coversupgradecolors()

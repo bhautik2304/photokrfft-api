@@ -56,6 +56,15 @@ return new class extends Migration
             $table->text('delivery_address')->nullable();
             $table->text('delivery_partner_link')->nullable();
             $table->text('delivery_tracking_no')->nullable();
+
+            $table->unsignedBigInteger('album_qty')->default(1);
+            $table->unsignedBigInteger('album_cost')->nullable();
+            $table->unsignedBigInteger('album_discount_amountCost')->default(0);
+            $table->unsignedBigInteger('album_after_discount_cost')->default(0);
+            $table->unsignedBigInteger('album_total_cost')->nullable();
+            $table->unsignedBigInteger('subtotale')->nullable();
+            // $table->unsignedBigInteger('order_total')->nullable();
+
             $table->timestamps();
         });
     }

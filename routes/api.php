@@ -97,6 +97,18 @@ Route::middleware(custommiddleware::class)->group(function () {
     Route::post('boxsleeveupgrades/update/{id}', [BoxsleeveupgradeController::class, 'update']);
     Route::post('countryzone/update/{id}', [CountryzoneController::class, 'update']);
 
+    Route::post('product/status/{id}', [ProductController::class, 'statusChange']);
+    Route::post('orientation/status/{id}', [OrientationController::class, 'statusChange']);
+    Route::post('Size/status/{id}', [SizeController::class, 'statusChange']);
+    Route::post('paper/status/{id}', [PaperController::class, 'statusChange']);
+    Route::post('sheet/status/{id}', [SheetController::class, 'statusChange']);
+    Route::post('covers/status/{id}', [CoversController::class, 'statusChange']);
+    Route::post('coversupgrades/status/{id}', [CoversupgradesController::class, 'statusChange']);
+    Route::post('colors/status/{id}', [ColorController::class, 'statusChange']);
+    Route::post('boxsleeve/status/{id}', [BoxsleeveController::class, 'statusChange']);
+    Route::post('boxsleeveupgrades/status/{id}', [BoxsleeveupgradeController::class, 'statusChange']);
+    Route::post('countryzone/status/{id}', [CountryzoneController::class, 'statusChange']);
+
     Route::prefix('product')->group(function () {
         Route::apiResource('productorientation', ProductorientationController::class);
         Route::apiResource('productsize', ProductSizeController::class);

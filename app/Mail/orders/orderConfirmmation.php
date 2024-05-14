@@ -33,9 +33,9 @@ class orderConfirmmation extends Mailable
      */
     public function envelope()
     {
-        $id = $this->order->order_no;
+        // $id = $this->order->order_no;
         return new Envelope(
-            subject: "Order Conformation for order ORD-$id",
+            subject: "Order Conformation for order",
         );
     }
 

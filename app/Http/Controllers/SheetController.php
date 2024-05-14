@@ -15,7 +15,7 @@ class SheetController extends Controller
     public function index()
     {
         //
-         return success('Retrived successfully',sheet::all());
+        return success('Retrived successfully', sheet::all());
     }
 
     /**
@@ -42,7 +42,7 @@ class SheetController extends Controller
         $sheet->img = storeFile($request, 'img', '/img/sheet/');
         $sheet->save();
 
-         return created('Created successfully');
+        return created('Created successfully');
     }
 
     /**
@@ -88,7 +88,7 @@ class SheetController extends Controller
             ]);
         }
 
-         return success('Updated successfully');
+        return success('Updated successfully');
     }
 
     /**
@@ -97,13 +97,21 @@ class SheetController extends Controller
      * @param  \App\Models\sheet  $sheet
      * @return \Illuminate\Http\Response
      */
-public function destroy(sheet $sheets,$id)
+    public function destroy(sheet $sheets, $id)
     {
         //
         $sheet = sheet::find($id);
         $sheet->delete();
 
-         return success('Deleted successfully');
+        return success('Deleted successfully');
+    }
 
+    public function statusChange(Request $request, $id)
+    {
+        sheet::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
     }
 }

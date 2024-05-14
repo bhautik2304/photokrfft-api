@@ -20,8 +20,9 @@ class covers extends Model
         'name',
         'type',
         'img',
+        'status',
     ];
- 
+
     public function coverupgrades()
     {
         return $this->hasMany(coversupgrades::class, 'cover_id');

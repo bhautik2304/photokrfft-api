@@ -119,4 +119,13 @@ class ProductController extends Controller
 
         return created('Deleted successfully');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        product::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

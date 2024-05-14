@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('img')->nullable();
             $table->unsignedBigInteger('value');
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

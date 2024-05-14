@@ -118,4 +118,13 @@ class CoversController extends Controller
         }
         return success('Deleted successfully');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        covers::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

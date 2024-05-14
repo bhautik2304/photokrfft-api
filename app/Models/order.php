@@ -42,6 +42,10 @@ class order extends Model
         'printing_price',
         'delivery_partner_link',
         'delivery_tracking_no',
+        'album_discount_amountCost',
+        'album_after_discount_cost',
+        'album_total_cost',
+        'subtotale',
     ];
 
     protected static function booted(): void

@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 
 class sheet extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'name',
         'img',
+        'status',
     ];
 }

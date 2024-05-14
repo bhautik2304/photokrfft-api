@@ -143,4 +143,13 @@ class CoversupgradesController extends Controller
 
         return success('Deleted successfully');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        coversupgrades::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

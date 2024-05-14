@@ -11,6 +11,7 @@ class orientation extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'name',
-        'img'
+        'img',
+        'status',
     ];
 }

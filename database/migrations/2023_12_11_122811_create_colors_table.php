@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('color');
             $table->text('img');
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

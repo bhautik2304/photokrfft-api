@@ -106,4 +106,13 @@ class PaperController extends Controller
 
         return success('Deleted successfully');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        paper::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

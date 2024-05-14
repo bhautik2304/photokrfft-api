@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->enum('type', ['img_option_colors', 'option_colors', 'both_img']);
             $table->text('img')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

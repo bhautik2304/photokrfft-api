@@ -101,7 +101,16 @@ class OrderController extends Controller
         $order->boxSleeveValue = $orderData->boxSleeveValue;
 
         $order->discount = $orderData->discount;
-        $order->order_total = (int)$orderData->orderTotale += (int)$orderData->zone->shipingcharge;
+        // $order->order_total = (int)$orderData->orderTotale += (int)$orderData->zone->shipingcharge;
+
+        $order->album_qty = $orderData->album_qty;
+        $order->album_cost = $orderData->albumCost;
+        $order->album_discount_amountCost = $orderData->albumDiscountAmountCost;
+        $order->album_after_discount_cost = $orderData->albumAfterDiscountCost;
+        $order->album_total_cost = $orderData->totaleAlbumcost;
+        $order->subtotal = $orderData->subtotale;
+        $order->order_total = (int)$orderData->subtotale += (int)$orderData->zone->shipingcharge;
+
         $order->save();
 
 
@@ -452,7 +461,11 @@ class OrderController extends Controller
         // $discount = $request->discount;
         order::find($id)->update([
             "discount" => $request->discount,
-            "order_total" => $request->orderValue
+            "order_total" => (int)$request->subtotale + (int)$request->shippingValue,
+            "album_discount_amountCost" => $request->discountValue,
+            "album_after_discount_cost" => $request->perAlbumCostDiscount,
+            "album_total_cost" => $request->totaleAlbumCost,
+            "subtotale" => $request->subtotale,
         ]);
 
         return success("discount Added Successfully");

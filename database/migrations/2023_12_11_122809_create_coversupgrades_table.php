@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('cover_id')->constrained('covers');
             $table->string('name');
             $table->text('img')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

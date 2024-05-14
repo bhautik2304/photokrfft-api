@@ -14,11 +14,11 @@ Your order has been successfully placed <br/>
 
 
 @component('mail::table')
-|                   |               |                                  |
-| ------------------|:-------------:| --------------------------------:|
-| Order :           |               | {{ $order->order_no }}           |
-| Order Date :      |               | {{ date("F j, Y", $timestamp) }} |
-| Total :           |               | {{ $order->order_total }}        |
+|                   |               |                                                                        |
+| ------------------|:-------------:| ----------------------------------------------------------------------:|
+| Order :           |               | ORD-{{ $order->order_no }}                                             |
+| Order Date :      |               | {{ date("F j, Y", $timestamp) }}                                       |
+| Total :           |               | {{$order->countryzone->currency_sign}} {{ $order->order_total }}       |
 @endcomponent
 </x-mail::panel>
 

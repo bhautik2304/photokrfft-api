@@ -14,5 +14,6 @@ class paper extends Model
         'name',
         'value',
         'img',
+        'status',
     ];
 }

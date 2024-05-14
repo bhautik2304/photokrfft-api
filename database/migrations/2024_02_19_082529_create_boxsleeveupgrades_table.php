@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('boxsleeve_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->text('img')->nullable();
+            $table->boolean('status')->default(true);
             $table->timestamps();
             $table->softDeletes();
         });

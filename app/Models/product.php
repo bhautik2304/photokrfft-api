@@ -19,7 +19,8 @@ class product extends Model
     protected $fillable = [
         'name',
         'img',
-        'min_page'
+        'min_page',
+        'status',
     ];
 
     public function orientation()

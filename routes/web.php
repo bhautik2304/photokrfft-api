@@ -2,9 +2,12 @@
 
 // use App\Service\Wahtsapp;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
 use App\Mail\orders\newOrderReceived;
 use Illuminate\Support\Facades\{Route};
 use App\Http\Controllers\authModule\authtication;
+use App\Mail\orders\orderConfirmmation;
+use App\Models\order;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +60,10 @@ Route::get('/', function () {
     // // send($Welcome_message);
 
     // dd(send($Welcome_message));
-    return response()->redirectTo("https://photokrafft.com");
+    // View::make('mail.orders.order-confirmmation',)->render();
+    // (new orderConfirmmation(order::find(26)->first()))->render();
+    // dd(order::find(26)->first()->toArray()['countryzone']['currency_sign']);
+    return (new orderConfirmmation(order::where('order_no', 402581)->first()))->render(); //response()->redirectTo("https://photokrafft.com");
 });
 
 Route::get('emailveryfy/{token}', [authtication::class, 'adminEmailVerifications'])->name('emailveryfy');

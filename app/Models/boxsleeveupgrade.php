@@ -13,6 +13,7 @@ class boxsleeveupgrade extends Model
     protected $fillable = [
         "name",
         "img",
+        'status',
     ];
 
     protected static function booted(): void

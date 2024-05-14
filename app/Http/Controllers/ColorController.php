@@ -107,4 +107,13 @@ class ColorController extends Controller
         boxsleevecolor::where("color_id", $id)->delete();
         return success("Deleted Successfully");
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        color::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

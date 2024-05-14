@@ -112,4 +112,13 @@ class OrientationController extends Controller
         productorientation::where('orientation_id', $id)->delete();
         return success('Orientation deleted');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        orientation::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

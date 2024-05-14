@@ -12,11 +12,11 @@ Your order status has changed to <span style="text-transform: capitalize;" >{{ $
 <x-mail::panel >
 
 @component('mail::table')
-|                   |               |                                  |
-| ------------------|:-------------:| --------------------------------:|
-| Order :           |               | ORD-{{ $order->order_no }}       |
-| Order Date :      |               | {{ date("F j, Y", $timestamp) }} |
-| Subtotal :        |               | {{ $order->order_total }}        |
+|                   |               |                                                                        |
+| ------------------|:-------------:| ----------------------------------------------------------------------:|
+| Order :           |               | ORD-{{ $order->order_no }}                                             |
+| Order Date :      |               | {{ date("F j, Y", $timestamp) }}                                       |
+| Total :           |               | {{$order->countryzone->currency_sign}} {{ $order->order_total }}       |
 @endcomponent
 </x-mail::panel>
 

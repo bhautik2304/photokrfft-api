@@ -105,4 +105,13 @@ class SizeController extends Controller
         productSize::where('size_id', $id)->delete();
         return success('Deleted successfully');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        Size::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }

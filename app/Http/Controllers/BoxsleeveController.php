@@ -119,4 +119,13 @@ class BoxsleeveController extends Controller
         }
         return success('Deleted successfully');
     }
+
+    public function statusChange(Request $request, $id)
+    {
+        boxsleeve::find($id)->update([
+            "status" => $request->status
+        ]);
+
+        return success('Status Change Successfully');
+    }
 }
