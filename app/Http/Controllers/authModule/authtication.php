@@ -148,10 +148,10 @@ class authtication extends Controller
             return response(["msg" => "Your Account is not Active", "code" => 404], 200);
         }
 
-        if (!$users->whatsapp_veryfi) {
-            # code...
-            return response(["msg" => "Pls Veryfi Your Whatsapp No", "code" => 404], 200);
-        }
+        // if (!$users->whatsapp_veryfi) {
+        //     # code...
+        //     return response(["msg" => "Pls Veryfi Your Whatsapp No", "code" => 404], 200);
+        // }
 
         $token = Str::random(60);
 
