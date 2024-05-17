@@ -465,7 +465,7 @@ class OrderController extends Controller
             "album_discount_amountCost" => $request->discountValue,
             "album_after_discount_cost" => $request->perAlbumCostDiscount,
             "album_total_cost" => $request->totaleAlbumCost,
-            "subtotale" => $request->subtotale,
+            "subtotal" => $request->subtotale,
         ]);
 
         return success("discount Added Successfully");
