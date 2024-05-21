@@ -40,6 +40,7 @@ class customer extends Model
         'token',
         'avtar',
         'otp',
+        'gst',
         'discount',
         'access_token',
     ];

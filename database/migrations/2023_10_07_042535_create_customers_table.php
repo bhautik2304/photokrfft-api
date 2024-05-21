@@ -39,6 +39,7 @@ return new class extends Migration
             $table->unsignedBigInteger("zone")->nullable();
             $table->unsignedBigInteger("discount")->default(0);
             $table->text('token')->nullable();
+            $table->text('gst')->nullable();
             $table->text('access_token')->nullable();
             $table->unsignedBigInteger("otp")->nullable();
             $table->timestamps();

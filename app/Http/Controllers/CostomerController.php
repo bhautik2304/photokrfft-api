@@ -70,6 +70,7 @@ class costomerController extends Controller
         $customer->address = $req->address;
         $customer->state = $req->state;
         $customer->country = $req->country;
+        $customer->gst = $req->gst;
 
         $customer->compunys_name = $req->compunys_name;
         $customer->compunys_logo = storeFile($req, 'compunys_logo', '/brand/logo/');
@@ -232,6 +233,7 @@ class costomerController extends Controller
             "phone_no" => $req->phone_no,
             "email" => $req->email,
             "state" => $req->state,
+            "gst" => $req->gst,
             "country" => $req->country,
             "address" => $req->address,
         ]);
