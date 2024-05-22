@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\authModule\authtication;
 use App\Http\Controllers\{AdminuserController, CoversupgradescolorController, BoxsleevecolorController, OrderController, ProductAlbumCopyPriceController, BoxsleeveController, BoxsleeveupgradeController, ColorController, CostomerController, CostomerrequistController, CountryzoneController, CoversController, CoversupgradesController, NotificationController, OrientationController, PaperController, PrintingpriceController, ProductboxsleeveController, ProductboxsleevepriceController, ProductcolorsController, ProductController, ProductcoversController, ProductCoversPriceController, ProductcoversupgradesController, ProductorientationController, ProductpapperController, ProductpapperpriceController, ProductsheetController, ProductsheetpriceController, ProductSizeController, SampleOrderPermissionStatusController, SheetController, SizeController, StudioController};
 use App\Http\Middleware\custommiddleware;
-use App\Models\costomer;
-use App\Models\customer;
-use App\Models\order;
 
 /*
  * |--------------------------------------------------------------------------

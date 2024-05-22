@@ -95,10 +95,10 @@ class authtication extends Controller
             return response(["msg" => "Users Not Found", "code" => 404], 200);
         }
 
-        if (!$users->email_veryfi) {
-            # code...
-            return response(["msg" => "Pls Verify Your Email id", "code" => 404], 200);
-        }
+        // if (!$users->email_veryfi) {
+        //     # code...
+        //     return response(["msg" => "Pls Verify Your Email id", "code" => 404], 200);
+        // }
 
         // if (!($req->password == $users->password)) {
         //     # code...
