@@ -22,6 +22,16 @@ use App\Http\Controllers\authModule\authtication;
 */
 
 Route::get('/', function () {
+    response()->redirectTo("https://photokrafft.com");
+});
+
+Route::get('emailveryfy/{token}', [authtication::class, 'adminEmailVerifications'])->name('emailveryfy');
+Route::get('customer/emailveryfy/{token}', [authtication::class, 'customerEmailVerifications'])->name('customeremailveryfy');
+Route::get('customer/whatsappverify/{token}', [authtication::class, 'customerWhatsappverifyVerifications']);
+
+
+
+Route::get('/xyz/test/', function () {
     // $phoneNumber = 916358006532;
 
     // $Welcome_message = [
@@ -72,10 +82,6 @@ Route::get('/', function () {
     //     //throw $th;
     //     return "fail";
     // }
-
-    response()->redirectTo("https://photokrafft.com");
+    // response()->redirectTo("https://photokrafft.com");
+    return response()->json(["msg" => "notest"]);
 });
-
-Route::get('emailveryfy/{token}', [authtication::class, 'adminEmailVerifications'])->name('emailveryfy');
-Route::get('customer/emailveryfy/{token}', [authtication::class, 'customerEmailVerifications'])->name('customeremailveryfy');
-Route::get('customer/whatsappverify/{token}', [authtication::class, 'customerWhatsappverifyVerifications']);
