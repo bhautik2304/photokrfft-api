@@ -64,7 +64,7 @@ Route::get('/', function () {
     // View::make('mail.orders.order-confirmmation',)->render();
     // (new orderConfirmmation(order::find(26)->first()))->render();
     // dd(order::find(26)->first()->toArray()['countryzone']['currency_sign']);
-    Mail::to("dndtecnosol@gmail.com")->send(new orderConfirmmation(order::where('order_no', 402581)->first()));
+    Mail::to("dndtecnosol@gmail.com")->send(new orderConfirmmation(order::where('order_no', 921304)->first()));
     try {
         //code...
         return "success";
