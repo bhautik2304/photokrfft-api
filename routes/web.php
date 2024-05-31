@@ -22,7 +22,7 @@ use App\Http\Controllers\authModule\authtication;
 */
 
 Route::get('/', function () {
-    response()->redirectTo("https://photokrafft.com");
+    return response()->redirectTo("https://photokrafft.com");
 });
 
 Route::get('emailveryfy/{token}', [authtication::class, 'adminEmailVerifications'])->name('emailveryfy');
