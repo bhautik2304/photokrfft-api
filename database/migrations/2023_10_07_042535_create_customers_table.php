@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->unsignedBigInteger("country_code");
             $table->unsignedBigInteger("phone_no");
             $table->unsignedBigInteger("whatsapp_no")->nullable();
             $table->text("email");
@@ -26,7 +25,7 @@ return new class extends Migration
             $table->string("country")->nullable();
 
             $table->text("compunys_name");
-            $table->text("compunys_logo");
+            $table->text("compunys_logo")->nullable();
             $table->text("social_link_1")->nullable();
             $table->text("social_link_2")->nullable();
 

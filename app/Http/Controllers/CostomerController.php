@@ -61,7 +61,6 @@ class costomerController extends Controller
 
         $customer = new customer;
         $customer->name = $req->name;
-        $customer->country_code = $req->country_code;
         $customer->phone_no = $req->phone_no;
         $customer->whatsapp_no = $req->whatsapp_no;
         $customer->email = $req->email;
