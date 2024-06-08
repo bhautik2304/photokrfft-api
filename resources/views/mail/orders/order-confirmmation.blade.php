@@ -1,9 +1,7 @@
 <x-mail::message>
 # Hello , <span style="text-transform: capitalize;" >{{ $order->costomer->name }}</span> <br/>
 
-Woo hoo!! <br/>
-
-Your order has been successfully placed <br/>
+Thank you for your order! We are excited to let you know that we have received your order <strong>#ORD-{{ $order->order_no }}</strong>. Here are the details of your purchase: <br/>
 
 <x-mail::panel>
 <h4>ORDER SUMMARY:</h4>
@@ -12,6 +10,7 @@ Your order has been successfully placed <br/>
     $timestamp = strtotime($order->created_at);
 @endphp
 
+Your order is being processed, and you will receive another email once your items have shipped. You can track your order status and view your order history by logging into your account on our website.  
 
 @component('mail::table')
 |                   |               |                                                                        |
@@ -27,13 +26,14 @@ Your order has been successfully placed <br/>
 Check Your Order Status
 </x-mail::button>
 
-You will get production level updates about this order ones we start processing it.
-
-Ones the order is ready to dispatch we will deliver the order to the below mentioned details.
 
 SHIPPING ADDRESS : <br>
 {{ $order->delivery_address !== null ? $order->delivery_address : $order->costomer->address }}
+<br/>
+If you have any questions or need assistance, please do not hesitate to contact our support team at support@photokrafft.com or visit our Support Page.<br>
 
+Thank you for shopping with us!<br>
 Thanks & Regards,<br>
+The Photokrafft Team  
 {{ config('app.name') }}
 </x-mail::message>
