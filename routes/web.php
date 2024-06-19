@@ -73,15 +73,15 @@ Route::get('/xyz/test/', function () {
     // dd(send($Welcome_message));
     // View::make('mail.orders.order-confirmmation',)->render();
     // (new orderConfirmmation(order::find(26)->first()))->render();
-    // dd(order::find(26)->first()->toArray()['countryzone']['currency_sign']);
-    // Mail::to("dndtecnosol@gmail.com")->send(new orderConfirmmation(order::where('order_no', 921304)->first()));
-    // try {
-    //     //code...
-    //     return "success";
-    // } catch (\Throwable $th) {
-    //     //throw $th;
-    //     return "fail";
-    // }
+    // dd(order::find(26)->first()->toArray());
+    Mail::to("dndtecnosol@gmail.com")->send(new orderConfirmmation(order::where('order_no', 308994)->first()));
+    try {
+        //code...
+        return "success";
+    } catch (\Throwable $th) {
+        //throw $th;
+        return "fail";
+    }
     // response()->redirectTo("https://photokrafft.com");
     return response()->json(["msg" => "notest"]);
 });
