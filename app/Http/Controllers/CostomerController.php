@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\newuserregister;
 use App\Models\customer;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\auth\emailverify;
 use App\Service\NotificationService;
 use App\Mail\customer\customerUpdate;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\{Hash, Log, Mail};
 use PhpParser\Node\Stmt\TryCatch;
 
@@ -78,6 +80,13 @@ class costomerController extends Controller
 
         $customer->access_token = $token;
         $customer->save();
+
+        try {
+            //send mail to admin parth@photokrafft.com ...
+            Mail::to("parth@photokrafft.com")->send(new newuserregister($customer));
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         try {
             //code...

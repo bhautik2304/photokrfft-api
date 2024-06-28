@@ -61,6 +61,7 @@ class OrderController extends Controller
         $order->user_id = $orderData->user->id;
         $order->product_id = $orderData->product_id;
         $order->pritnig_price_type = $orderData->pritnig_price_type;
+        $order->design_print_bind_option = $orderData->design_print_bind_option;
         $order->pritnig_price = $orderData->pritnig_price_value;
 
         $order->orientation_id = $orderData->productOrientation;

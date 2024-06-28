@@ -56,6 +56,7 @@ return new class extends Migration
             $table->text('delivery_address')->nullable();
             $table->text('delivery_partner_link')->nullable();
             $table->text('delivery_tracking_no')->nullable();
+            $table->text('design_print_bind_option')->nullable();
 
             $table->unsignedBigInteger('album_qty')->default(1);
             $table->unsignedBigInteger('album_cost')->nullable();

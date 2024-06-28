@@ -2,10 +2,13 @@
 
 // use App\Service\Wahtsapp;
 use App\Models\order;
+use Illuminate\Support\Str;
+use App\Mail\auth\emailverify;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 use App\Mail\orders\newOrderReceived;
+use App\Mail\auth\customeremailverify;
 use App\Mail\orders\orderConfirmmation;
 use Illuminate\Support\Facades\{Route};
 use App\Http\Controllers\authModule\authtication;
@@ -74,8 +77,9 @@ Route::get('/xyz/test/', function () {
     // View::make('mail.orders.order-confirmmation',)->render();
     // (new orderConfirmmation(order::find(26)->first()))->render();
     // dd(order::find(26)->first()->toArray());
-    Mail::to("dndtecnosol@gmail.com")->send(new orderConfirmmation(order::where('order_no', 308994)->first()));
     try {
+        $token = Str::random(32);
+        Mail::to("parth@photokrafft.com")->send(new emailverify("https://api.photokrafft.com/customer/emailveryfy/$token"));
         //code...
         return "success";
     } catch (\Throwable $th) {
